@@ -98,7 +98,7 @@
             <div class="column is-half">
 			<h1 class="title has-text-centered mb-6">uiGuy</h1>
 				<div class="social-links">
-					<a href="https://peterbenoit.com" class="button button-linkedin is-fullwidth" target="_blank">
+					<a href="https://peterbenoit.com" class="button button-linkedin is-fullwidth" target="_blank" id="portfolio-button">
 						<span class="material-icons" aria-hidden="true">web</span>
 						<span>Portfolio</span>
 					</a>
@@ -144,5 +144,17 @@
             </div>
         </div>
     </div>
+	<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script>
+        document.getElementById('portfolio-button').addEventListener('click', function(event) {
+            event.preventDefault();
+
+            confetti();
+
+            this.removeEventListener('click', arguments.callee);
+
+            window.open(this.href, '_blank');
+        });
+    </script>
 </body>
 </html>
