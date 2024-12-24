@@ -38,7 +38,7 @@
             font-size: 1.2rem;
             transition: transform 0.2s;
         }
-		.button:hover {
+		.button:hover, .button:hover:active {
 			transform: scale(1.02);
 		}
 		.material-icons {
@@ -48,7 +48,7 @@
 			background-color: #333;
 			color: white;
 		}
-		.button-github:hover {
+		.button-github:hover, .button-github:active {
 			background-color: #444;
 			color: #ddd;
 		}
@@ -56,7 +56,7 @@
 			background-color: #0077b5;
 			color: white;
 		}
-		.button-linkedin:hover {
+		.button-linkedin:hover, .button-linkedin:active {
 			background-color: #005582;
 			color: #e0e0e0;
 		}
@@ -64,7 +64,7 @@
 			background-color: #010101;
 			color: white;
 		}
-		.button-codepen:hover {
+		.button-codepen:hover, .button-codepen:active {
 			background-color: #333;
 			color: #ddd;
 		}
@@ -72,7 +72,7 @@
 			background-color: #000000;
 			color: white;
 		}
-		.button-x:hover {
+		.button-x:hover, .button-x:active {
 			background-color: #222;
 			color: #ddd;
 		}
@@ -80,7 +80,7 @@
 			background-color: #ffffff;
 			color: #000000;
 		}
-		.button-white:hover {
+		.button-white:hover, .button-white:active {
 			background-color: #f0f0f0;
 			color: #333;
 		}
@@ -153,7 +153,7 @@
 
             this.removeEventListener('click', arguments.callee);
 
-            window.open(this.href, '_blank');
+            setTimeout(() => {window.open(this.href, '_blank');}, 1000);
         });
     </script>
 </body>
