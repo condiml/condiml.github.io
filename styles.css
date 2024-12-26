@@ -1,0 +1,138 @@
+html,
+body {
+	background-color: #f5f5f5;
+}
+
+body {
+	font-family: 'JetBrains Mono', monospace;
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+}
+
+.button {
+	margin: 1rem 0;
+	height: 4rem;
+	font-family: 'JetBrains Mono', monospace;
+	font-size: 1.2rem;
+	transition: transform 0.2s;
+}
+
+.button:hover,
+.button:hover:active {
+	transform: scale(1.02);
+}
+
+i[class^='ri-'] {
+	margin-right: 0.5rem;
+	font-size: 1.2rem;
+}
+
+.button img {
+	margin-right: 0.5rem;
+}
+
+.button-portfolio {
+	background-color: #6f6f58;
+	color: white;
+}
+
+.button-portfolio:hover,
+.button-portfolio:active {
+	background-color: #797963;
+	color: #ddd;
+}
+
+.button-github {
+	background-color: #333;
+	color: white;
+}
+
+.button-github:hover,
+.button-github:active {
+	background-color: #444;
+	color: #ddd;
+}
+
+.button-linkedin {
+	background-color: #0077b5;
+	color: white;
+}
+
+.button-linkedin:hover,
+.button-linkedin:active {
+	background-color: #005582;
+	color: #e0e0e0;
+}
+
+.button-codepen {
+	background-color: #010101;
+	color: white;
+}
+
+.button-codepen:hover,
+.button-codepen:active {
+	background-color: #333;
+	color: #ddd;
+}
+
+.button-x {
+	background-color: #000000;
+	color: white;
+}
+
+.button-x:hover,
+.button-x:active {
+	background-color: #222;
+	color: #ddd;
+}
+
+.button-white {
+	background-color: #ffffff;
+	color: #000000;
+}
+
+.button-white:hover,
+.button-white:active {
+	background-color: #f0f0f0;
+	color: #333;
+}
+
+.button-straypath {
+	background-color: #565c42;
+	color: white;
+}
+
+.button-straypath:hover,
+.button-straypath:active {
+	background-color: #6b7450;
+	color: #e0e0e0;
+}
+
+.button-brickcity {
+	background-color: #aa4a44;
+	color: white;
+}
+
+.button-brickcity:hover,
+.button-brickcity:active {
+	background-color: #b4554e;
+	color: #e0e0e0;
+}
+
+.button-repowidget {
+	background-color: #f7f7f7;
+	color: #333;
+}
+
+.button-repowidget:hover,
+.button-repowidget:active {
+	background-color: #f7f7f7;
+	color: #191919;
+}
+
+@media (max-width: 768px) {
+	.container {
+		padding: 0 1rem;
+	}
+}
