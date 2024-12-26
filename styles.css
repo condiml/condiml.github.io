@@ -34,101 +34,101 @@ i[class^='ri-'] {
 
 .button-portfolio {
 	background-color: #6f6f58;
-	color: white;
+	color: white !important;
 }
 
 .button-portfolio:hover,
 .button-portfolio:active {
 	background-color: #797963;
-	color: #ddd;
+	color: #ddd !important;
 }
 
 .button-github {
 	background-color: #333;
-	color: white;
+	color: white !important;
 }
 
 .button-github:hover,
 .button-github:active {
 	background-color: #444;
-	color: #ddd;
+	color: #ddd !important;
 }
 
 .button-linkedin {
 	background-color: #0077b5;
-	color: white;
+	color: white !important;
 }
 
 .button-linkedin:hover,
 .button-linkedin:active {
 	background-color: #005582;
-	color: #e0e0e0;
+	color: #e0e0e0 !important;
 }
 
 .button-codepen {
 	background-color: #010101;
-	color: white;
+	color: white !important;
 }
 
 .button-codepen:hover,
 .button-codepen:active {
 	background-color: #333;
-	color: #ddd;
+	color: #ddd !important;
 }
 
 .button-x {
 	background-color: #000000;
-	color: white;
+	color: white !important;
 }
 
 .button-x:hover,
 .button-x:active {
 	background-color: #222;
-	color: #ddd;
+	color: #ddd !important;
 }
 
 .button-white {
 	background-color: #ffffff;
-	color: #000000;
+	color: #000000 !important;
 }
 
 .button-white:hover,
 .button-white:active {
 	background-color: #f0f0f0;
-	color: #333;
+	color: #333 !important;
 }
 
 .button-straypath {
 	background-color: #565c42;
-	color: white;
+	color: white !important;
 }
 
 .button-straypath:hover,
 .button-straypath:active {
 	background-color: #6b7450;
-	color: #e0e0e0;
+	color: #e0e0e0 !important;
 }
 
 .button-brickcity {
 	background-color: #aa4a44;
-	color: white;
+	color: white !important;
 }
 
 .button-brickcity:hover,
 .button-brickcity:active {
 	background-color: #b4554e;
-	color: #e0e0e0;
+	color: #e0e0e0 !important;
 }
 
 .button-repowidget {
 	background-color: #f7f7f7;
-	color: #333;
+	color: #333 !important;
 }
 
 .button-repowidget:hover,
 .button-repowidget:active {
 	background-color: #f7f7f7;
-	color: #191919;
+	color: #191919 !important;
 }
 
 @media (max-width: 768px) {
