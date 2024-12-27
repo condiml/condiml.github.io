@@ -8,6 +8,19 @@ body {
 	min-height: 100vh;
 	display: flex;
 	align-items: center;
+	background: linear-gradient(-45deg, #000000, #000000, #d3d3d3, #c0c0c0, #f5f5f5, #ffffff);
+	background-size: 400% 400%;
+	animation: animate 7s infinite alternate;
+}
+
+@keyframes animate {
+	0% {
+		background-position: 0% 50%;
+	}
+
+	100% {
+		background-position: 100% 50%;
+	}
 }
 
 .button {
