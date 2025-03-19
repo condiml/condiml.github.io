@@ -1,25 +1,52 @@
-html,
 body {
-	background-color: #f5f5f5;
-}
-
-body {
-	font-family: 'JetBrains Mono', monospace;
-	min-height: 100vh;
+	font-family: 'Source Code Pro', system-ui;
+	overflow: hidden;
 	display: flex;
 	align-items: center;
-	background: linear-gradient(-45deg, #000000, #000000, #d3d3d3, #c0c0c0, #f5f5f5, #ffffff);
-	background-size: 400% 400%;
-	animation: animate 7s infinite alternate;
+	background: radial-gradient(300px circle at 55% 60% in oklab,
+			var(--shine-2), transparent 100% 100%), radial-gradient(farthest-side circle at 75% 30% in oklab,
+			var(--shine-1) 0%, var(--card-bg) 100%);
+	background-blend-mode: color-burn;
+	animation: animate-color-1 8s infinite linear alternate, 4s animate-color-2 1s infinite linear alternate;
 }
 
-@keyframes animate {
-	0% {
-		background-position: 0% 50%;
+@import url('https://fonts.googleapis.com/css2?family=Anybody:wght@500&family=Source+Code+Pro:wght@400;700&display=swap');
+
+@property --card-bg {
+	syntax: "<color>";
+	inherits: false;
+	initial-value: #c0bae8;
+}
+
+@property --shine-1 {
+	syntax: "<color>";
+	inherits: false;
+	initial-value: #ffbbc0;
+}
+
+@property --shine-2 {
+	syntax: "<color>";
+	inherits: false;
+	initial-value: #c0aecb;
+}
+
+@keyframes animate-color-1 {
+	from {
+		--shine-1: initial;
 	}
 
-	100% {
-		background-position: 100% 50%;
+	to {
+		--shine-1: orange;
+	}
+}
+
+@keyframes animate-color-2 {
+	from {
+		--shine-2: initial;
+	}
+
+	to {
+		--shine-2: hotpink;
 	}
 }
 
