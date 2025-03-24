@@ -1,178 +1,332 @@
+:root {
+	--primary-color: #4a6cf7;
+	--primary-hover: #3a5ce4;
+	--text-color: #121212;
+	--background: #f9fafb;
+	--card-bg: #ffffff;
+	--section-spacing: 2.5rem;
+	--border-radius: 12px;
+	--transition-speed: 0.3s;
+	--box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+}
+
 body {
-	font-family: 'Source Code Pro', system-ui;
-	overflow: hidden;
-	display: flex;
-	align-items: center;
-	background: radial-gradient(300px circle at 55% 60% in oklab,
-			var(--shine-2), transparent 100% 100%), radial-gradient(farthest-side circle at 75% 30% in oklab,
-			var(--shine-1) 0%, var(--card-bg) 100%);
-	background-blend-mode: color-burn;
-	animation: animate-color-1 8s infinite linear alternate, 4s animate-color-2 1s infinite linear alternate;
+	font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+	background: var(--background);
+	color: var(--text-color);
+	line-height: 1.6;
+	min-height: 100vh;
+	padding: 2rem 1rem;
+	transition: background-color var(--transition-speed) ease;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Anybody:wght@500&family=Source+Code+Pro:wght@400;700&display=swap');
-
-@property --card-bg {
-	syntax: "<color>";
-	inherits: false;
-	initial-value: #c0bae8;
+.container {
+	max-width: 680px;
+	margin: 0 auto;
 }
 
-@property --shine-1 {
-	syntax: "<color>";
-	inherits: false;
-	initial-value: #ffbbc0;
+.column {
+	background-color: var(--card-bg);
+	border-radius: var(--border-radius);
+	box-shadow: var(--box-shadow);
+	padding: 2.5rem;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-@property --shine-2 {
-	syntax: "<color>";
-	inherits: false;
-	initial-value: #c0aecb;
+.title {
+	font-size: 3rem;
+	font-weight: 800;
+	margin-bottom: 1.5rem;
+	background: linear-gradient(90deg, #4a6cf7, #6e8ffb);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	color: transparent;
+	text-align: center;
 }
 
-@keyframes animate-color-1 {
-	from {
-		--shine-1: initial;
-	}
-
-	to {
-		--shine-1: orange;
-	}
+.section-title {
+	font-weight: 700;
+	margin: var(--section-spacing) 0 1.25rem;
+	position: relative;
+	font-size: 1.5rem;
+	color: var(--text-color);
 }
 
-@keyframes animate-color-2 {
-	from {
-		--shine-2: initial;
-	}
-
-	to {
-		--shine-2: hotpink;
-	}
+.section-title::after {
+	content: '';
+	position: absolute;
+	width: 60px;
+	height: 4px;
+	background: var(--primary-color);
+	bottom: -10px;
+	left: 50%;
+	transform: translateX(-50%);
+	border-radius: 2px;
 }
 
 .button {
-	margin: 1rem 0;
-	height: 4rem;
-	font-family: 'JetBrains Mono', monospace;
-	font-size: 1.2rem;
-	transition: transform 0.2s;
+	border-radius: 10px;
+	padding: 0.75rem 1.25rem;
+	font-weight: 500;
+	margin-bottom: 0.75rem;
+	display: flex;
+	align-items: center;
+	transition: transform var(--transition-speed), box-shadow var(--transition-speed),
+		background-color var(--transition-speed);
+	background: white;
+	border: 1px solid #e5e7eb;
+	color: var(--text-color);
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
-.button:hover,
-.button:hover:active {
-	transform: scale(1.02);
+.button:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
 }
 
-i[class^='ri-'] {
-	margin-right: 0.5rem;
-	font-size: 1.2rem;
+.button i,
+.button img {
+	margin-right: 0.75rem;
+	font-size: 1.25rem;
 }
 
 .button img {
-	margin-right: 0.5rem;
+	width: 1.25rem;
+	height: 1.25rem;
 }
 
+.button span {
+	font-size: 0.95rem;
+}
+
+.social-links,
+.websites,
+.projects,
+.github-repos,
+.codepen-demos,
+.chrome-extensions {
+	margin-bottom: var(--section-spacing);
+}
+
+/* Button Styles - with hover states that maintain text visibility */
 .button-portfolio {
-	background-color: #6f6f58;
-	color: white !important;
+	background: linear-gradient(135deg, #00c6ff, #0072ff);
+	color: white;
+	border: none;
 }
 
-.button-portfolio:hover,
-.button-portfolio:active {
-	background-color: #797963;
-	color: #ddd !important;
+.button-portfolio:hover {
+	background: linear-gradient(135deg, #00d4ff, #0080ff);
+	color: white;
 }
 
 .button-github {
-	background-color: #333;
-	color: white !important;
+	background: #24292e;
+	color: white;
+	border: none;
 }
 
-.button-github:hover,
-.button-github:active {
-	background-color: #444;
-	color: #ddd !important;
+.button-github:hover {
+	background: #2c3238;
+	color: white;
 }
 
 .button-linkedin {
-	background-color: #0077b5;
-	color: white !important;
+	background: #0077b5;
+	color: white;
+	border: none;
 }
 
-.button-linkedin:hover,
-.button-linkedin:active {
-	background-color: #005582;
-	color: #e0e0e0 !important;
+.button-linkedin:hover {
+	background: #0088cc;
+	color: white;
 }
 
 .button-codepen {
-	background-color: #010101;
-	color: white !important;
+	background: #131417;
+	color: white;
+	border: none;
 }
 
-.button-codepen:hover,
-.button-codepen:active {
-	background-color: #333;
-	color: #ddd !important;
+.button-codepen:hover {
+	background: #1e1f23;
+	color: white;
 }
 
 .button-x {
-	background-color: #000000;
-	color: white !important;
+	background: #000000;
+	color: white;
+	border: none;
 }
 
-.button-x:hover,
-.button-x:active {
-	background-color: #222;
-	color: #ddd !important;
-}
-
-.button-white {
-	background-color: #ffffff;
-	color: #000000 !important;
-}
-
-.button-white:hover,
-.button-white:active {
-	background-color: #f0f0f0;
-	color: #333 !important;
-}
-
-.button-straypath {
-	background-color: #565c42;
-	color: white !important;
-}
-
-.button-straypath:hover,
-.button-straypath:active {
-	background-color: #6b7450;
-	color: #e0e0e0 !important;
+.button-x:hover {
+	background: #222222;
+	color: white;
 }
 
 .button-brickcity {
-	background-color: #aa4a44;
-	color: white !important;
+	background: #e63946;
+	color: white;
+	border: none;
 }
 
-.button-brickcity:hover,
-.button-brickcity:active {
-	background-color: #b4554e;
-	color: #e0e0e0 !important;
+.button-brickcity:hover {
+	background: #f24453;
+	color: white;
+}
+
+.button-straypath {
+	background: #2a9d8f;
+	color: white;
+	border: none;
+}
+
+.button-straypath:hover {
+	background: #34b9aa;
+	color: white;
 }
 
 .button-repowidget {
-	background-color: #f7f7f7;
-	color: #333 !important;
+	background: #6b46c1;
+	color: white;
+	border: none;
 }
 
-.button-repowidget:hover,
-.button-repowidget:active {
-	background-color: #f7f7f7;
-	color: #191919 !important;
+.button-repowidget:hover {
+	background: #7b52d7;
+	color: white;
 }
 
-@media (max-width: 768px) {
-	.container {
-		padding: 0 1rem;
+.button-repo {
+	background: linear-gradient(135deg, #6e48aa, #9d50bb);
+	color: white;
+	border: none;
+}
+
+.button-repo:hover {
+	background: linear-gradient(135deg, #7e56c0, #ad5fcc);
+	color: white;
+}
+
+.button-codepen-demo {
+	background: linear-gradient(135deg, #111111, #333333);
+	color: white;
+	border: none;
+}
+
+.button-codepen-demo:hover {
+	background: linear-gradient(135deg, #1a1a1a, #444444);
+	color: white;
+}
+
+.button-chrome {
+	background: linear-gradient(135deg, #4285f4, #34a853);
+	color: white;
+	border: none;
+}
+
+.button-chrome:hover {
+	background: linear-gradient(135deg, #5295ff, #3fbc60);
+	color: white;
+}
+
+/* Fix for the Project Showcase button which doesn't have a specific class */
+.websites a:nth-child(3) {
+	background: #4a6cf7;
+	color: white;
+	border: none;
+}
+
+.websites a:nth-child(3):hover {
+	background: #5a7cf8;
+	color: white;
+}
+
+/* Fix for the TailwindCSS button which doesn't have a specific class */
+.projects a:nth-child(1) {
+	background: #0ea5e9;
+	color: white;
+	border: none;
+}
+
+.projects a:nth-child(1):hover {
+	background: #0bb5ff;
+	color: white;
+}
+
+.coming-soon {
+	position: relative;
+	opacity: 0.9;
+}
+
+.tag {
+	font-size: 0.7rem;
+	font-weight: 500;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+	.title {
+		font-size: 2.5rem;
+	}
+
+	.column {
+		padding: 1.5rem;
+	}
+}
+
+/* Animation for hover effects */
+.button {
+	overflow: hidden;
+	position: relative;
+}
+
+.button::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(255, 255, 255, 0.08);
+	transform: translateX(-100%);
+	transition: transform 0.4s ease;
+}
+
+.button:hover::after {
+	transform: translateX(0);
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+	:root {
+		--text-color: #e5e7eb;
+		--background: #121212;
+		--card-bg: #1f1f1f;
+	}
+
+	.button:not([class*="button-"]) {
+		background: #252525;
+		border-color: #333;
+		color: #e5e7eb;
+	}
+
+	.button:not([class*="button-"]):hover {
+		background: #2d2d2d;
+		color: white;
+	}
+
+	.title {
+		background: linear-gradient(90deg, #5a7cf8, #8ba5fc);
+		-webkit-background-clip: text;
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+		color: transparent;
+	}
+
+	.tag.is-warning.is-light {
+		background-color: rgba(255, 202, 44, 0.2);
+		color: #ffca2c;
 	}
 }
