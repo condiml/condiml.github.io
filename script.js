@@ -1,53 +1,267 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Fade in elements on page load
-    const allElements = document.querySelectorAll('.column > *');
-    allElements.forEach((element, index) => {
-        element.style.opacity = '0';
-        element.style.transform = 'translateY(20px)';
-        element.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    // Set sequential animation delays for buttons
+    const buttonGroups = [
+        '.social-links a',
+        '.websites a',
+        '.projects a',
+        '.github-repos a',
+        '.codepen-demos a',
+        '.chrome-extensions a',
+    ];
 
-        setTimeout(() => {
-            element.style.opacity = '1';
-            element.style.transform = 'translateY(0)';
-        }, 100 + index * 100);
+    buttonGroups.forEach((selector) => {
+        const buttons = document.querySelectorAll(selector);
+        buttons.forEach((button, index) => {
+            button.style.animationDelay = `${0.1 + index * 0.1}s`;
+        });
     });
 
-    // Portfolio button click effect
-    const portfolioButton = document.getElementById('portfolio-button');
-    if (portfolioButton) {
-        portfolioButton.addEventListener('click', () => {
-            confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { y: 0.6 },
-            });
+    // Mouse move parallax effect for background
+    const body = document.querySelector('body');
+    document.addEventListener('mousemove', (e) => {
+        const x = e.clientX / window.innerWidth;
+        const y = e.clientY / window.innerHeight;
+
+        body.style.setProperty('--mouse-x', x);
+        body.style.setProperty('--mouse-y', y);
+    });
+
+    // Subtle hover effect for the card
+    const card = document.querySelector('.column');
+    if (card) {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width;
+            const y = (e.clientY - rect.top) / rect.height;
+
+            // Subtle tilt effect based on mouse position
+            const tiltX = (y - 0.5) * 3;
+            const tiltY = (x - 0.5) * -3;
+
+            card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.01)`;
+
+            // Dynamic highlight effect
+            const highlight = `radial-gradient(circle at ${x * 100}% ${
+                y * 100
+            }%, rgba(255, 255, 255, 0.1) 0%, transparent 50%)`;
+            card.style.backgroundImage = highlight;
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = '';
+            card.style.backgroundImage = '';
         });
     }
 
-    // Add subtle hover animations to all buttons
+    // Button ripple effect
     const buttons = document.querySelectorAll('.button');
     buttons.forEach((button) => {
-        button.addEventListener('mouseenter', () => {
-            button.style.transform = 'translateY(-4px)';
-            button.style.boxShadow = '0 10px 20px rgba(0, 0, 0, 0.1)';
-        });
+        button.addEventListener('click', function (e) {
+            const rect = button.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
 
-        button.addEventListener('mouseleave', () => {
-            button.style.transform = '';
-            button.style.boxShadow = '';
+            const ripple = document.createElement('span');
+            ripple.classList.add('ripple');
+            ripple.style.left = `${x}px`;
+            ripple.style.top = `${y}px`;
+
+            button.appendChild(ripple);
+
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
         });
     });
 
-    // Check if we should use dark mode based on user preference
-    function updateTheme() {
-        const isDarkMode =
-            window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        document.body.classList.toggle('dark-mode', isDarkMode);
+    // Intersection Observer for scroll animations
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        },
+        {
+            threshold: 0.1,
+        }
+    );
+
+    document.querySelectorAll('.section-title, .button').forEach((element) => {
+        observer.observe(element);
+    });
+
+    // Optional: add subtle particle background
+    if (typeof particlesJS !== 'undefined') {
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 30, density: { enable: true, value_area: 800 } },
+                color: { value: '#4a6cf7' },
+                opacity: { value: 0.1, random: true },
+                size: { value: 5, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: '#4a6cf7',
+                    opacity: 0.1,
+                    width: 1,
+                },
+                move: { enable: true, speed: 1, direction: 'none', random: true, out_mode: 'out' },
+            },
+        });
     }
 
-    // Listen for changes in color scheme preference
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateTheme);
-
-    // Initial theme check
-    updateTheme();
+    // Add theme switcher initialization
+    initThemeSwitcher();
 });
+
+// Theme switching functionality
+function initThemeSwitcher() {
+    // Check for saved preference
+    const currentTheme = localStorage.getItem('theme') || 'default';
+
+    // Add theme toggle button to the page
+    const column = document.querySelector('.column');
+
+    const themeToggle = document.createElement('div');
+    themeToggle.className = 'theme-toggle';
+    themeToggle.innerHTML = `
+    <button class="theme-btn default-theme ${currentTheme === 'default' ? 'active' : ''}"
+            title="Modern Theme">
+      <span class="theme-circle"></span>
+    </button>
+    <button class="theme-btn rustic-theme ${currentTheme === 'rustic' ? 'active' : ''}"
+            title="Rustic Theme">
+      <span class="theme-circle"></span>
+    </button>
+  `;
+
+    // Insert before the first child of column
+    if (column) {
+        column.insertBefore(themeToggle, column.firstChild);
+    }
+
+    // Set initial theme
+    setTheme(currentTheme);
+
+    // Remove event delegation from the container
+    // and directly handle clicks on the theme buttons
+    const themeButtons = document.querySelectorAll('.theme-btn');
+    themeButtons.forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent event from bubbling (stops ripple effect)
+
+            // Set the theme based on which button was clicked
+            if (btn.classList.contains('default-theme')) {
+                setTheme('default');
+            } else if (btn.classList.contains('rustic-theme')) {
+                setTheme('rustic');
+            }
+
+            console.log(
+                'Theme button clicked:',
+                btn.classList.contains('default-theme') ? 'default' : 'rustic'
+            );
+        });
+    });
+}
+
+function setTheme(theme) {
+    // Get or create theme stylesheet link
+    let themeLink = document.getElementById('theme-stylesheet');
+
+    if (!themeLink) {
+        themeLink = document.createElement('link');
+        themeLink.rel = 'stylesheet';
+        themeLink.id = 'theme-stylesheet';
+        document.head.appendChild(themeLink);
+    }
+
+    // Update theme link href based on selected theme
+    if (theme === 'rustic') {
+        themeLink.href = 'rustic-theme.css';
+        localStorage.setItem('theme', 'rustic');
+        document.documentElement.setAttribute('data-theme', 'rustic');
+        document.body.classList.add('rustic-theme');
+        document.body.classList.remove('default-theme');
+    } else {
+        themeLink.href = 'style.css';
+        localStorage.setItem('theme', 'default');
+        document.documentElement.setAttribute('data-theme', 'default');
+        document.body.classList.add('default-theme');
+        document.body.classList.remove('rustic-theme');
+    }
+
+    // Create a style tag to ensure theme buttons maintain consistent styling
+    let styleTag = document.getElementById('theme-buttons-style');
+    if (!styleTag) {
+        styleTag = document.createElement('style');
+        styleTag.id = 'theme-buttons-style';
+        document.head.appendChild(styleTag);
+
+        // Add CSS that will override any theme-specific styling for the theme buttons
+        styleTag.textContent = `
+            .theme-toggle {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                display: flex;
+                gap: 8px;
+                z-index: 100;
+            }
+
+            .theme-btn {
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                border: 2px solid rgba(255, 255, 255, 0.5);
+                background: none;
+                cursor: pointer;
+                padding: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.3s ease;
+                overflow: hidden;
+            }
+
+            .theme-btn:hover {
+                transform: scale(1.1);
+            }
+
+            .theme-btn.active {
+                border-color: #fff;
+                box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+            }
+
+            .theme-circle {
+                width: 16px;
+                height: 16px;
+                border-radius: 50%;
+                transition: all 0.3s ease;
+            }
+
+            .default-theme .theme-circle {
+                background: linear-gradient(135deg, #4a6cf7, #2845c9);
+            }
+
+            .rustic-theme .theme-circle {
+                background: linear-gradient(135deg, #8b4513, #5e2c0b);
+            }
+        `;
+    }
+
+    // Update button states
+    const buttons = document.querySelectorAll('.theme-btn');
+    buttons.forEach((btn) => {
+        btn.classList.remove('active');
+        if (
+            (theme === 'rustic' && btn.classList.contains('rustic-theme')) ||
+            (theme === 'default' && btn.classList.contains('default-theme'))
+        ) {
+            btn.classList.add('active');
+        }
+    });
+}
