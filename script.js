@@ -1,3 +1,7 @@
+// Import CSS files so Vite processes them
+import './style.css';
+import rusticTheme from './rustic-theme.css?inline';
+
 document.addEventListener('DOMContentLoaded', () => {
     // Set sequential animation delays for buttons
     const buttonGroups = [
@@ -173,21 +177,20 @@ function setTheme(theme) {
     let themeLink = document.getElementById('theme-stylesheet');
 
     if (!themeLink) {
-        themeLink = document.createElement('link');
-        themeLink.rel = 'stylesheet';
+        themeLink = document.createElement('style');
         themeLink.id = 'theme-stylesheet';
         document.head.appendChild(themeLink);
     }
 
-    // Update theme link href based on selected theme
+    // Update theme based on selected theme
     if (theme === 'rustic') {
-        themeLink.href = 'rustic-theme.css';
+        themeLink.textContent = rusticTheme;
         localStorage.setItem('theme', 'rustic');
         document.documentElement.setAttribute('data-theme', 'rustic');
         document.body.classList.add('rustic-theme');
         document.body.classList.remove('default-theme');
     } else {
-        themeLink.href = 'style.css';
+        themeLink.textContent = ''; // Clear the custom theme
         localStorage.setItem('theme', 'default');
         document.documentElement.setAttribute('data-theme', 'default');
         document.body.classList.add('default-theme');
