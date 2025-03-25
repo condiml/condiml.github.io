@@ -1,6 +1,6 @@
 // Import CSS files so Vite processes them
 import './style.css';
-import rusticTheme from './rustic-theme.css?inline';
+import rusticThemeCSS from './rustic-theme.css?inline';
 
 document.addEventListener('DOMContentLoaded', () => {
     // Set sequential animation delays for buttons
@@ -173,24 +173,26 @@ function initThemeSwitcher() {
 }
 
 function setTheme(theme) {
-    // Get or create theme stylesheet link
-    let themeLink = document.getElementById('theme-stylesheet');
+    // Get or create theme stylesheet container
+    let themeStyle = document.getElementById('theme-stylesheet');
 
-    if (!themeLink) {
-        themeLink = document.createElement('style');
-        themeLink.id = 'theme-stylesheet';
-        document.head.appendChild(themeLink);
+    if (!themeStyle) {
+        themeStyle = document.createElement('style');
+        themeStyle.id = 'theme-stylesheet';
+        document.head.appendChild(themeStyle);
     }
 
     // Update theme based on selected theme
     if (theme === 'rustic') {
-        themeLink.textContent = rusticTheme;
+        // Use the imported CSS content directly instead of trying to fetch it
+        themeStyle.textContent = rusticThemeCSS;
         localStorage.setItem('theme', 'rustic');
         document.documentElement.setAttribute('data-theme', 'rustic');
         document.body.classList.add('rustic-theme');
         document.body.classList.remove('default-theme');
     } else {
-        themeLink.textContent = ''; // Clear the custom theme
+        // For default theme, just clear the rustic theme style
+        themeStyle.textContent = '';
         localStorage.setItem('theme', 'default');
         document.documentElement.setAttribute('data-theme', 'default');
         document.body.classList.add('default-theme');
