@@ -3,7 +3,7 @@
 	--primary-color: #4a6cf7;
 	--primary-hover: #3a5ce4;
 	--text-color: #121212;
-	--background: #f6f9fc;
+	--background: #fff;
 	--card-bg: rgba(255, 255, 255, 0.85);
 	--section-spacing: 2.5rem;
 	--border-radius: 16px;
@@ -23,9 +23,11 @@ body {
 	transition: background-color var(--transition-speed) ease;
 	position: relative;
 	overflow-x: hidden;
-	background: linear-gradient(135deg, #e9ecee 0%, #4a5057 100%);
+	/* background: linear-gradient(135deg, #e9ecee 0%, #4a5057 100%); */
 	--mouse-x: 0.5;
 	--mouse-y: 0.5;
+	/* Remove this if you don't want any background color */
+	/* background: var(--background); */
 }
 
 body>a {
@@ -33,6 +35,7 @@ body>a {
 }
 
 /* Background decorative elements */
+/* Comment out or remove this entire block if you don't want the decorative background overlay */
 body::before {
 	content: '';
 	position: fixed;
@@ -411,12 +414,16 @@ body.rustic-theme {
 	--shadow-color: rgba(79, 67, 56, 0.1);
 	font-family: 'Libre Baskerville', Georgia, serif;
 	background: linear-gradient(135deg, #f4f1ec 0%, #e8e0d5 100%);
+	/* Comment this out to remove rustic theme gradient */
+	/* background: linear-gradient(135deg, #f4f1ec 0%, #e8e0d5 100%); */
 }
 
 /* Background decorative elements for rustic theme */
 body.rustic-theme::before {
 	background: radial-gradient(circle at 80% 10%, rgba(166, 124, 82, 0.08) 0%, transparent 50%),
 		radial-gradient(circle at 20% 80%, rgba(112, 76, 51, 0.08) 0%, transparent 50%);
+	/* Comment this out to remove rustic theme overlay gradients */
+	/* background: radial-gradient(...); */
 }
 
 body.rustic-theme .column {
@@ -619,11 +626,15 @@ body.rustic-theme .tag {
 
 	body {
 		background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+		/* Comment this out to remove dark mode gradient */
+		/* background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); */
 	}
 
 	body::before {
 		background: radial-gradient(circle at 80% 10%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
 			radial-gradient(circle at 20% 80%, rgba(124, 58, 237, 0.15) 0%, transparent 50%);
+		/* Comment this out to remove dark mode overlay gradients */
+		/* background: radial-gradient(...); */
 	}
 
 	.button:not([class*="button-"]) {
@@ -753,6 +764,24 @@ body.rustic-theme .tag {
 
 .rustic-theme .theme-circle {
 	background: linear-gradient(135deg, #8b4513, #5e2c0b);
+}
+
+/* More specific selectors to ensure they don't get overridden */
+.theme-btn.default-theme .theme-circle {
+	background: linear-gradient(135deg, #4a6cf7, #2845c9) !important;
+}
+
+.theme-btn.rustic-theme .theme-circle {
+	background: linear-gradient(135deg, #8b4513, #5e2c0b) !important;
+}
+
+/* Override any potential cascade from body.rustic-theme */
+body.rustic-theme .theme-btn.default-theme .theme-circle {
+	background: linear-gradient(135deg, #4a6cf7, #2845c9) !important;
+}
+
+body.rustic-theme .theme-btn.rustic-theme .theme-circle {
+	background: linear-gradient(135deg, #8b4513, #5e2c0b) !important;
 }
 
 /* ANIMATIONS */
