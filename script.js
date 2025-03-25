@@ -150,8 +150,7 @@ function initThemeSwitcher() {
     // Set initial theme
     setTheme(currentTheme);
 
-    // Remove event delegation from the container
-    // and directly handle clicks on the theme buttons
+    // Handle clicks on the theme buttons
     const themeButtons = document.querySelectorAll('.theme-btn');
     themeButtons.forEach((btn) => {
         btn.addEventListener('click', (e) => {
@@ -173,89 +172,17 @@ function initThemeSwitcher() {
 }
 
 function setTheme(theme) {
-    // Get or create theme stylesheet container
-    let themeStyle = document.getElementById('theme-stylesheet');
-
-    if (!themeStyle) {
-        themeStyle = document.createElement('style');
-        themeStyle.id = 'theme-stylesheet';
-        document.head.appendChild(themeStyle);
-    }
-
-    // Update theme based on selected theme
+    // Simply toggle the body class - no need to load external CSS
     if (theme === 'rustic') {
-        // Use the imported CSS content directly instead of trying to fetch it
-        themeStyle.textContent = rusticThemeCSS;
         localStorage.setItem('theme', 'rustic');
         document.documentElement.setAttribute('data-theme', 'rustic');
         document.body.classList.add('rustic-theme');
         document.body.classList.remove('default-theme');
     } else {
-        // For default theme, just clear the rustic theme style
-        themeStyle.textContent = '';
         localStorage.setItem('theme', 'default');
         document.documentElement.setAttribute('data-theme', 'default');
         document.body.classList.add('default-theme');
         document.body.classList.remove('rustic-theme');
-    }
-
-    // Create a style tag to ensure theme buttons maintain consistent styling
-    let styleTag = document.getElementById('theme-buttons-style');
-    if (!styleTag) {
-        styleTag = document.createElement('style');
-        styleTag.id = 'theme-buttons-style';
-        document.head.appendChild(styleTag);
-
-        // Add CSS that will override any theme-specific styling for the theme buttons
-        styleTag.textContent = `
-            .theme-toggle {
-                position: absolute;
-                top: 15px;
-                right: 15px;
-                display: flex;
-                gap: 8px;
-                z-index: 100;
-            }
-
-            .theme-btn {
-                width: 24px;
-                height: 24px;
-                border-radius: 50%;
-                border: 2px solid rgba(255, 255, 255, 0.5);
-                background: none;
-                cursor: pointer;
-                padding: 0;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                transition: all 0.3s ease;
-                overflow: hidden;
-            }
-
-            .theme-btn:hover {
-                transform: scale(1.1);
-            }
-
-            .theme-btn.active {
-                border-color: #fff;
-                box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
-            }
-
-            .theme-circle {
-                width: 16px;
-                height: 16px;
-                border-radius: 50%;
-                transition: all 0.3s ease;
-            }
-
-            .default-theme .theme-circle {
-                background: linear-gradient(135deg, #4a6cf7, #2845c9);
-            }
-
-            .rustic-theme .theme-circle {
-                background: linear-gradient(135deg, #8b4513, #5e2c0b);
-            }
-        `;
     }
 
     // Update button states
