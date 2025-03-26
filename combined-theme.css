@@ -51,17 +51,23 @@ body::before {
 }
 
 .container {
-	max-width: 680px;
-	margin: 0 auto;
-	position: relative;
-	z-index: 1;
+	max-width: 680px !important;
+	margin: 0 auto !important;
+	position: relative !important;
+	z-index: 1 !important;
+	padding: 0 10px;
+}
+
+body.rustic-theme div.container {
+	/* Special border for rustic theme to help visualize */
+	border: 1px dashed rgba(166, 124, 82, 0.3);
 }
 
 .column {
 	background-color: var(--card-bg);
 	border-radius: var(--border-radius);
 	box-shadow: var(--box-shadow);
-	padding: 2.5rem;
+	padding: .5rem;
 	transition: transform 0.3s ease, box-shadow 0.3s ease;
 	position: relative;
 	backdrop-filter: blur(var(--glass-blur));
@@ -105,7 +111,7 @@ body::before {
 	left: 50%;
 	width: 60px;
 	height: 4px;
-	background: linear-gradient(90deg, #4a6cf7, #8e2de2);
+	/* background: linear-gradient(90deg, #4a6cf7, #8e2de2); */
 	transform: translateX(-50%);
 	border-radius: 2px;
 	opacity: 0.7;
@@ -128,7 +134,7 @@ body::before {
 	position: absolute;
 	width: 140px;
 	height: 1px;
-	background: linear-gradient(90deg, var(--primary-color), transparent);
+	/* background: linear-gradient(90deg, var(--primary-color), transparent); */
 	bottom: -8px;
 	left: 50%;
 	transform: translateX(-50%);
@@ -142,6 +148,8 @@ body::before {
 	margin-bottom: 0.85rem;
 	display: flex;
 	align-items: center;
+	justify-content: space-between;
+	/* Distribute content evenly */
 	transition: all var(--transition-speed) cubic-bezier(0.22, 1, 0.36, 1);
 	background: white;
 	border: 1px solid rgba(229, 231, 235, 0.7);
@@ -161,9 +169,17 @@ body::before {
 
 .button i,
 .button img {
-	margin-right: 0.75rem;
+	margin-right: 0;
+	/* Remove right margin */
 	font-size: 1.35rem;
 	transition: transform 0.3s ease;
+	flex-shrink: 0;
+	/* Prevent icon from shrinking */
+	width: 1.5rem;
+	/* Fixed width for consistency */
+	display: flex;
+	justify-content: center;
+	/* Center icon horizontally */
 }
 
 .button:hover i,
@@ -180,6 +196,23 @@ body::before {
 	font-size: 0.95rem;
 	position: relative;
 	z-index: 2;
+	/* flex-grow: 1; */
+	/* Allow text to take available space */
+	/* text-align: center; */
+	/* Center the text */
+	padding: 0 0.5rem;
+	/* Add padding around text */
+}
+
+/* Fix for the button with tag that needs special handling */
+.button.coming-soon {
+	justify-content: flex-start;
+	/* Align to the start for buttons with tags */
+}
+
+.button.coming-soon span:first-of-type {
+	flex-grow: 1;
+	text-align: center;
 }
 
 .social-links,
