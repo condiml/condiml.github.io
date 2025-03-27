@@ -136,7 +136,6 @@ Example deployment to Netlify:
 /
 ├── index.html            # Main HTML structure
 ├── links.css             # Styling for the landing page
-├── links.js              # JavaScript functionality
 ├── vite.config.js        # Vite configuration
 ├── package.json          # Project dependencies
 └── README.md             # Project documentation
