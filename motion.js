@@ -3,7 +3,7 @@ let mouseY = 0;
 let windowWidth = window.innerWidth;
 let windowHeight = window.innerHeight;
 
-const DEBUG_MODE = true;
+const DEBUG_MODE = false; // Changed to false to disable the broken debug mode
 
 const AUTO_ANIMATION = true;
 
@@ -151,6 +151,7 @@ function createDebugDisplay() {
     debugElement.innerHTML = `
         <div class="motion-debug-header">
             Motion Debug
+            <button id="close-debug-button" class="close-debug-button">&times;</button>
         </div>
         <div class="motion-debug-content">
             <div>Mouse X: <span id="debug-mouse-x">0</span></div>
@@ -168,6 +169,7 @@ function createDebugDisplay() {
             <div class="motion-status-indicator"></div>
             <span>Motion system active</span>
         </div>
+        <button id="test-motion-button" class="test-motion-button">Test Motion</button>
     `;
     document.body.appendChild(debugElement);
 
@@ -179,14 +181,21 @@ function createDebugDisplay() {
         );
     });
 
-    document.getElementById('test-motion-button').addEventListener('click', () => {
-        testMotionEffect();
-    });
+    // Add event listeners only after elements exist in the DOM
+    const testButton = document.getElementById('test-motion-button');
+    if (testButton) {
+        testButton.addEventListener('click', () => {
+            testMotionEffect();
+        });
+    }
 
-    document.getElementById('close-debug-button').addEventListener('click', () => {
-        debugElement.classList.add('motion-debug-hidden');
-        debugButton.classList.remove('active');
-    });
+    const closeButton = document.getElementById('close-debug-button');
+    if (closeButton) {
+        closeButton.addEventListener('click', () => {
+            debugElement.classList.add('motion-debug-hidden');
+            debugButton.classList.remove('active');
+        });
+    }
 
     document.addEventListener('click', (e) => {
         if (
