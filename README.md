@@ -4,6 +4,8 @@ A stylish, customizable "link in bio" landing page built with HTML, CSS, and Vit
 
 ![UIGuy Links Landing Page Screenshot](screenshot.png)
 
+![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/peterbenoit/uiguy.dev?utm_source=oss&utm_medium=github&utm_campaign=peterbenoit%2Fuiguy.dev&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
+
 ## ✨ Features
 
 -   **Modern Design** - Clean, dark-mode interface with animations and hover effects
