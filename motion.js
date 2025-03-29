@@ -19,6 +19,9 @@ let currentY = 0;
 let autoAnimationPhase = 0;
 let lastAutoUpdate = 0;
 
+let deviceOrientationSupported = false;
+let deviceOrientationPermission = 'unknown'; // 'granted', 'denied', or 'unknown'
+
 function updateMousePosition(e) {
     mouseX = e.clientX || (e.touches && e.touches[0].clientX) || windowWidth / 2;
     mouseY = e.clientY || (e.touches && e.touches[0].clientY) || windowHeight / 2;
@@ -33,8 +36,14 @@ function handleOrientation(e) {
         const beta = e.beta || 0;
         const gamma = e.gamma || 0;
 
-        mouseX = windowWidth / 2 + (gamma / 90) * (windowWidth / 3);
-        mouseY = windowHeight / 2 + (beta / 180) * (windowHeight / 3);
+        const normalizedGamma = Math.max(-30, Math.min(30, gamma)) / 30;
+        const normalizedBeta = Math.max(-30, Math.min(30, beta)) / 30;
+
+        mouseX = windowWidth / 2 + normalizedGamma * (windowWidth / 2);
+        mouseY = windowHeight / 2 + normalizedBeta * (windowHeight / 2);
+
+        lastAutoUpdate = Date.now();
+        deviceOrientationSupported = true;
 
         if (DEBUG_MODE) {
             updateDebugInfo();
@@ -42,12 +51,77 @@ function handleOrientation(e) {
     }
 }
 
+function requestDeviceOrientationPermission() {
+    if (
+        typeof DeviceOrientationEvent !== 'undefined' &&
+        typeof DeviceOrientationEvent.requestPermission === 'function'
+    ) {
+        DeviceOrientationEvent.requestPermission()
+            .then((permissionState) => {
+                deviceOrientationPermission = permissionState;
+                if (permissionState === 'granted') {
+                    window.addEventListener('deviceorientation', handleOrientation);
+                    showMobileMotionIndicator('Device orientation active!');
+                } else {
+                    showMobileMotionIndicator(
+                        'Permission denied. Using fallback animation.',
+                        'warning'
+                    );
+                }
+            })
+            .catch((error) => {
+                console.error('Error requesting device orientation permission:', error);
+                deviceOrientationPermission = 'denied';
+                showMobileMotionIndicator('Could not access orientation. Using fallback.', 'error');
+            });
+    } else if (window.DeviceOrientationEvent) {
+        window.addEventListener('deviceorientation', handleOrientation);
+        deviceOrientationPermission = 'granted';
+    } else {
+        deviceOrientationPermission = 'denied';
+        deviceOrientationSupported = false;
+        showMobileMotionIndicator('Your device does not support orientation tracking.', 'error');
+    }
+}
+
+function showMobileMotionIndicator(message, type = 'info') {
+    const existingIndicator = document.querySelector('.motion-indicator');
+    if (existingIndicator) {
+        existingIndicator.remove();
+    }
+
+    const indicator = document.createElement('div');
+    indicator.className = `motion-indicator motion-indicator-${type}`;
+    indicator.innerHTML = `
+        <div class="motion-indicator-inner">
+            <div class="motion-indicator-dot"></div>
+            <div class="motion-indicator-text">${message}</div>
+        </div>
+    `;
+    document.body.appendChild(indicator);
+
+    setTimeout(() => {
+        indicator.classList.add('motion-indicator-fade');
+        setTimeout(() => {
+            indicator.remove();
+        }, 1000);
+    }, 5000);
+}
+
+function isMobileDevice() {
+    return (
+        typeof window.orientation !== 'undefined' ||
+        navigator.userAgent.indexOf('IEMobile') !== -1 ||
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    );
+}
+
 let lastMouseMove = 0;
 
 function updateAutoAnimation() {
     const now = Date.now();
 
-    if (now - lastMouseMove > 1000 && AUTO_ANIMATION) {
+    if (now - lastMouseMove > 1000 && now - lastAutoUpdate > 1000 && AUTO_ANIMATION) {
         autoAnimationPhase += 0.01;
 
         const radius = Math.min(windowWidth, windowHeight) * 0.4;
@@ -69,8 +143,6 @@ document.addEventListener('touchmove', (e) => {
     updateMousePosition(e);
     lastMouseMove = Date.now();
 });
-
-window.addEventListener('deviceorientation', handleOrientation);
 
 window.addEventListener('resize', () => {
     windowWidth = window.innerWidth;
@@ -181,7 +253,6 @@ function createDebugDisplay() {
         );
     });
 
-    // Add event listeners only after elements exist in the DOM
     const testButton = document.getElementById('test-motion-button');
     if (testButton) {
         testButton.addEventListener('click', () => {
@@ -275,22 +346,42 @@ function testMotionEffect() {
 }
 
 function addMotionIndicator() {
-    const indicator = document.createElement('div');
-    indicator.className = 'motion-indicator';
-    indicator.innerHTML = `
-        <div class="motion-indicator-inner">
-            <div class="motion-indicator-dot"></div>
-            <div class="motion-indicator-text">Mouse Tracking Active - Move your cursor!</div>
-        </div>
-    `;
-    document.body.appendChild(indicator);
+    if (!isMobileDevice()) {
+        const indicator = document.createElement('div');
+        indicator.className = 'motion-indicator';
+        indicator.innerHTML = `
+            <div class="motion-indicator-inner">
+                <div class="motion-indicator-dot"></div>
+                <div class="motion-indicator-text">Mouse Tracking Active - Move your cursor!</div>
+            </div>
+        `;
+        document.body.appendChild(indicator);
 
-    setTimeout(() => {
-        indicator.classList.add('motion-indicator-fade');
         setTimeout(() => {
-            indicator.remove();
-        }, 1000);
-    }, 5000);
+            indicator.classList.add('motion-indicator-fade');
+            setTimeout(() => {
+                indicator.remove();
+            }, 1000);
+        }, 5000);
+    } else {
+        const indicator = document.createElement('div');
+        indicator.className = 'motion-indicator mobile-indicator';
+        indicator.innerHTML = `
+            <div class="motion-indicator-inner">
+                <div class="motion-indicator-text">Enable device motion for interactive effects</div>
+                <button id="enable-motion-btn" class="enable-motion-btn">Enable Motion</button>
+            </div>
+        `;
+        document.body.appendChild(indicator);
+
+        document.getElementById('enable-motion-btn').addEventListener('click', () => {
+            requestDeviceOrientationPermission();
+            indicator.classList.add('motion-indicator-fade');
+            setTimeout(() => {
+                indicator.remove();
+            }, 1000);
+        });
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -302,4 +393,13 @@ document.addEventListener('DOMContentLoaded', () => {
     animate();
 
     addMotionIndicator();
+
+    if (isMobileDevice()) {
+        if (
+            typeof DeviceOrientationEvent !== 'undefined' &&
+            typeof DeviceOrientationEvent.requestPermission !== 'function'
+        ) {
+            window.addEventListener('deviceorientation', handleOrientation);
+        }
+    }
 });
