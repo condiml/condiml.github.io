@@ -555,6 +555,11 @@ body {
 	color: white;
 }
 
+.scenic-byways .link-icon {
+	background: linear-gradient(135deg, #4285F4, #34A853);
+	color: white;
+}
+
 .showcase .link-icon {
 	background: linear-gradient(135deg, #6366f1, #8b5cf6);
 	color: white;
