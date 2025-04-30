@@ -565,6 +565,11 @@ body {
 	color: white;
 }
 
+.get-viewport .link-icon {
+	background: linear-gradient(135deg, #2563eb, #0891b2);
+	color: white;
+}
+
 .tailwind .link-icon {
 	background: linear-gradient(135deg, #06b6d4, #0ea5e9);
 	color: white;
