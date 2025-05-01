@@ -9,7 +9,7 @@ const AUTO_ANIMATION = true;
 
 const bgShapes = document.querySelectorAll('.shape');
 const avatar = document.querySelector('.profile-avatar');
-const cards = document.querySelectorAll('.link-card');
+let cards = document.querySelectorAll('.link-card');
 
 const smoothing = 0.1;
 
@@ -21,6 +21,12 @@ let lastAutoUpdate = 0;
 
 let deviceOrientationSupported = false;
 let deviceOrientationPermission = 'unknown'; // 'granted', 'denied', or 'unknown'
+
+let visibleCards = new Set();
+let cardPositions = new Map();
+let lastAnimationFrame = 0;
+const FRAME_RATE = 30;
+const FRAME_INTERVAL = 1000 / FRAME_RATE;
 
 // Save motion preference to localStorage
 function saveMotionPreference(enabled) {
@@ -170,7 +176,30 @@ window.addEventListener('resize', () => {
 	windowHeight = window.innerHeight;
 });
 
-function animate() {
+function updateCardPositions() {
+	if (!cards) return;
+
+	cards.forEach(card => {
+		const rect = card.getBoundingClientRect();
+		cardPositions.set(card, {
+			left: rect.left,
+			top: rect.top,
+			width: rect.width,
+			height: rect.height,
+			centerX: rect.left + rect.width / 2,
+			centerY: rect.top + rect.height / 2
+		});
+	});
+}
+
+function animate(timestamp) {
+	// Throttle animation frames
+	if (timestamp && timestamp - lastAnimationFrame < FRAME_INTERVAL) {
+		requestAnimationFrame(animate);
+		return;
+	}
+	lastAnimationFrame = timestamp || 0;
+
 	updateAutoAnimation();
 
 	currentX += (mouseX - currentX) * smoothing;
@@ -179,14 +208,13 @@ function animate() {
 	const normalizedX = (currentX / windowWidth - 0.5) * 2;
 	const normalizedY = (currentY / windowHeight - 0.5) * 2;
 
+	// Animate background shapes
 	if (bgShapes) {
 		bgShapes.forEach((shape, index) => {
 			const depth = 0.2 + index * 0.1;
 			const moveX = normalizedX * depth * 400;
 			const moveY = normalizedY * depth * 400;
-
 			const rotation = normalizedX * normalizedY * (10 + index * 5);
-
 			const scale = 1 + Math.abs(normalizedX * normalizedY) * 0.15;
 
 			shape.style.transform = `translate(${moveX}px, ${moveY}px) rotate(${rotation}deg) scale(${scale})`;
@@ -196,33 +224,34 @@ function animate() {
 		});
 	}
 
+	// Animate avatar
 	if (avatar) {
 		const rotateX = normalizedY * -10;
 		const rotateY = normalizedX * 10;
 		avatar.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-		avatar.style.transition = 'transform 0.1s';
 	}
 
-	if (cards) {
-		cards.forEach((card) => {
-			const rect = card.getBoundingClientRect();
-			const cardCenterX = rect.left + rect.width / 2;
-			const cardCenterY = rect.top + rect.height / 2;
+	// Only animate visible cards
+	if (visibleCards.size > 0) {
+		visibleCards.forEach((card) => {
+			const position = cardPositions.get(card);
+			if (!position) return;
 
-			const deltaX = currentX - cardCenterX;
-			const deltaY = currentY - cardCenterY;
+			const deltaX = currentX - position.centerX;
+			const deltaY = currentY - position.centerY;
 			const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
 			const maxDistance = 500;
 			if (distance < maxDistance) {
+				card.classList.add('animate');
 				const intensity = 1 - distance / maxDistance;
 				const tiltX = deltaY * 0.02 * intensity;
 				const tiltY = -deltaX * 0.02 * intensity;
 				card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateZ(15px)`;
 				card.style.transition = 'transform 0.1s';
 			} else {
-				card.style.transform =
-					'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0)';
+				card.classList.remove('animate');
+				card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0)';
 				card.style.transition = 'transform 0.5s';
 			}
 		});
@@ -447,4 +476,34 @@ document.addEventListener('DOMContentLoaded', () => {
 			window.addEventListener('deviceorientation', handleOrientation);
 		}
 	}
+
+	// Set up intersection observer
+	const cardObserver = new IntersectionObserver((entries) => {
+		entries.forEach(entry => {
+			if (entry.isIntersecting) {
+				visibleCards.add(entry.target);
+			} else {
+				visibleCards.delete(entry.target);
+			}
+		});
+		updateCardPositions();
+	}, {
+		rootMargin: '300px' // Detect cards 300px before they enter viewport
+	});
+
+	// Observe all cards
+	cards = document.querySelectorAll('.link-card');
+	cards.forEach(card => cardObserver.observe(card));
+
+	updateCardPositions();
+});
+
+window.addEventListener('scroll', () => {
+	window.requestAnimationFrame(updateCardPositions);
+});
+
+window.addEventListener('resize', () => {
+	windowWidth = window.innerWidth;
+	windowHeight = window.innerHeight;
+	updateCardPositions();
 });
