@@ -402,8 +402,10 @@ function addMotionIndicator() {
 		indicator.innerHTML = `
             <div class="motion-indicator-inner">
                 <div class="motion-indicator-text">Enable device motion for interactive effects</div>
-                <button id="enable-motion-btn" class="enable-motion-btn">Enable Motion</button>
-                <button id="disable-motion-btn" class="enable-motion-btn" style="background: #333; margin-left: 8px;">No Thanks</button>
+                <div class="motion-buttons">
+                    <button id="enable-motion-btn" class="enable-motion-btn primary">Enable</button>
+                    <button id="disable-motion-btn" class="enable-motion-btn secondary">No Thanks</button>
+                </div>
             </div>
         `;
 		document.body.appendChild(indicator);
