@@ -634,6 +634,11 @@ body {
 	color: white;
 }
 
+.saltykeys .link-icon {
+	background: linear-gradient(135deg, #ffb300, #63b208);
+	color: white;
+}
+
 .aprils-art .link-icon {
 	background: linear-gradient(135deg, #fb24c9, #fa1547);
 	color: white;
@@ -660,7 +665,7 @@ body {
 }
 
 .image-processor .link-icon {
-	background: linear-gradient(135deg, #fbbf24, #facc15);
+	background: linear-gradient(135deg, #ffffff, #87b7ff);
 	color: white;
 }
 
