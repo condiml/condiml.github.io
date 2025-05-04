@@ -649,6 +649,11 @@ body {
 	color: white;
 }
 
+.wordleish .link-icon {
+	background: linear-gradient(135deg, #6aaa64, #c9b458);
+	color: white;
+}
+
 .tailwind .link-icon {
 	background: linear-gradient(135deg, #06b6d4, #0ea5e9);
 	color: white;
