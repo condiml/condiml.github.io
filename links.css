@@ -712,6 +712,11 @@ body {
 	color: white;
 }
 
+.tetrish .link-icon {
+	background: linear-gradient(135deg, #FF00AA, #00FFF0);
+	color: white;
+}
+
 .tailwind .link-icon {
 	background: linear-gradient(135deg, #06b6d4, #0ea5e9);
 	color: white;
