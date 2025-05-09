@@ -11,6 +11,64 @@
 	--transition: all 0.3s ease;
 }
 
+/* Performance optimizations */
+
+/* Use content-visibility for items that might be off-screen */
+.link-card {
+	content-visibility: auto;
+	contain-intrinsic-size: auto 150px;
+}
+
+/* Optimize paint operations */
+.bg-gradient,
+.bg-noise,
+.bg-grid {
+	will-change: transform;
+	transform: translateZ(0);
+}
+
+/* Optimize animation performance */
+.social-icon,
+.link-card {
+	transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+	will-change: transform, box-shadow;
+}
+
+/* Reduce motion when requested by user */
+@media (prefers-reduced-motion: reduce) {
+	* {
+		animation-duration: 0.001s !important;
+		transition-duration: 0.001s !important;
+	}
+}
+
+.reduce-motion * {
+	transition: none !important;
+	animation: none !important;
+}
+
+/* Use GPU acceleration for smoother animations */
+.profile-avatar img {
+	transform: translateZ(0);
+}
+
+/* Add opacity transition for elements as they appear */
+.link-card:not(.visible) {
+	opacity: 0.8;
+	transform: translateY(10px);
+}
+
+.link-card.visible {
+	opacity: 1;
+	transform: translateY(0);
+	transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+
+/* Font display to improve rendering */
+@font-face {
+	font-display: swap;
+}
+
 * {
 	margin: 0;
 	padding: 0;

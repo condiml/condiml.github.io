@@ -1,0 +1,29 @@
+# Enable compression
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/javascript
+    application/json image/svg+xml
+</IfModule>
+
+# Set caching headers
+<IfModule mod_expires.c>
+    ExpiresActive On # Images ExpiresByType image/jpeg "access plus 1 year" ExpiresByType image/png
+    "access plus 1 year" ExpiresByType image/webp "access plus 1 year" ExpiresByType image/svg+xml
+    "access plus 1 year" ExpiresByType image/x-icon "access plus 1 year" # CSS, JavaScript
+    ExpiresByType text/css "access plus 1 month" ExpiresByType application/javascript "access plus 1
+    month" # Fonts ExpiresByType font/ttf "access plus 1 year" ExpiresByType font/woff "access plus
+    1 year" ExpiresByType font/woff2 "access plus 1 year" # Default ExpiresDefault "access plus 1
+    month"
+</IfModule>
+
+# Remove ETags
+<IfModule mod_headers.c> Header unset ETag </IfModule>
+FileETag None # Security headers
+<IfModule mod_headers.c>
+    # Protect against XSS attacks Header set X-XSS-Protection "1; mode=block" # Prevent MIME-type
+    sniffing Header set X-Content-Type-Options "nosniff" # Referrer policy Header set
+    Referrer-Policy "strict-origin-when-cross-origin" # Content Security Policy Header set
+    Content-Security-Policy "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net
+    https://peterbenoit.com; style-src 'self' https://cdn.jsdelivr.net https://fonts.googleapis.com
+    'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:;
+    connect-src 'self';"
+</IfModule>
