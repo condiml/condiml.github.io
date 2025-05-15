@@ -697,6 +697,11 @@ body {
 	color: white;
 }
 
+.url-shortener .link-icon {
+	background: linear-gradient(135deg, #5500ff, #63b208);
+	color: white;
+}
+
 .aprils-art .link-icon {
 	background: linear-gradient(135deg, #fb24c9, #fa1547);
 	color: white;
