@@ -1,0 +1,94 @@
+name: Build Website
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push events but only for the main/master branch
+  push:
+    branches: [ main, master ] # Adjust to your default branch name if different
+
+  # Triggers the workflow on pull request events targeting the main/master branch
+  pull_request:
+    branches: [ main, master ] # Adjust to your default branch name
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [22.x] # Specify the Node.js version(s) you want to use
+        # You can add more versions here if you want to test against multiple, e.g., [16.x, 18.x, 20.x]
+
+    steps:
+      # 1. Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout repository
+        uses: actions/checkout@v4 # Always good to use the latest major version
+
+      # 2. Sets up Node.js environment
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm' # Caches npm dependencies for faster subsequent runs
+
+      # 3. Install dependencies
+      # Using `npm ci` is generally recommended for CI environments as it's faster and more reliable
+      # It installs dependencies exactly as defined in package-lock.json
+      - name: Install dependencies
+        run: npm ci
+
+      # 4. Build the project
+      # This command should match the build script in your package.json
+      - name: Build project
+        run: npm run build
+
+      # Optional: Upload build artifacts (e.g., your 'dist' or 'build' folder)
+      # This is useful if you want to deploy the built files later or download them.
+      - name: Upload build artifact
+        if: success() # Only run this step if previous steps were successful
+        uses: actions/upload-artifact@v4
+        with:
+          name: website-build-output # Name of the artifact
+          path: ./public # IMPORTANT: Change './dist' to your actual build output directory
+                      # Common alternatives: './build', './public', etc.
+          retention-days: 7 # How long to keep the artifact (optional)
+
+# --- How to use this file ---
+# 1. Create the directory path `.github/workflows/` in the root of your repository if it doesn't exist.
+# 2. Save the content above into a new file, for example, `build-website.yml`, inside that directory.
+# 3. Commit and push this file to your GitHub repository.
+#
+# --- Explanation ---
+# name: A descriptive name for your workflow.
+#
+# on: Defines the events that trigger the workflow.
+#   - push: Runs on pushes to the specified branches.
+#   - pull_request: Runs when a pull request is opened or updated targeting the specified branches.
+#   - workflow_dispatch: Allows manual triggering from the GitHub Actions UI.
+#
+# jobs: Contains one or more jobs.
+#   build: The name of our job (you can name it anything).
+#     runs-on: Specifies the operating system for the runner (ubuntu-latest is common and recommended).
+#     strategy:
+#       matrix:
+#         node-version: Allows you to run the job against multiple Node.js versions.
+#                       We've set it to 18.x here.
+#     steps: A sequence of tasks to be executed.
+#       - uses: actions/checkout@v4: Checks out your code.
+#       - uses: actions/setup-node@v4: Sets up the specified Node.js version and configures caching for npm.
+#         with:
+#           node-version: Specifies the Node.js version.
+#           cache: 'npm': Enables caching of npm dependencies.
+#       - run: npm ci: Installs dependencies. `npm ci` is preferred over `npm install` in CI
+#                      because it uses the `package-lock.json` or `npm-shrinkwrap.json`
+#                      for a clean and reproducible install.
+#       - run: npm run build: Executes your build script.
+#       - uses: actions/upload-artifact@v4: (Optional) Uploads the build output.
+#         with:
+#           name: A name for the downloadable artifact.
+#           path: The path to your build output directory (e.g., `dist`, `build`). **Make sure to adjust this!**
+#           retention-days: How long GitHub should store this artifact.
