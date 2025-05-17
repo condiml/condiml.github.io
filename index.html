@@ -60,6 +60,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
     <script type="application/ld+json">{
                 "@context": "https://schema.org",
                 "@type": "Person",
@@ -87,6 +88,9 @@
 </head>
 
 <body>
+    <audio src="nhacnen.mp3" autoplay loop>
+        Trình duyệt của bạn không hỗ trợ thẻ audio.
+    </audio>
     <div class="bg-gradient" style="contain: layout paint; content-visibility: auto"></div>
     <div class="bg-noise" style="contain: layout paint; content-visibility: auto"></div>
     <div class="bg-grid" style="contain: layout paint; content-visibility: auto"></div>
@@ -206,6 +210,267 @@
                 </div>
                 <div class="link-arrow"><i class="ri-arrow-right-up-line"></i></div>
             </a>
+            <!-- Thẻ audio - có thể ẩn đi nếu bạn muốn -->
+    <audio id="myAudio" src="nhacnen.mp3" preload="metadata"></audio>
+    <!-- Thay "nhacnen.mp3" bằng đường dẫn tới file nhạc của bạn -->
+
+    <!-- From Uiverse.io by hoshikawamaki - Đã được chỉnh sửa để thêm ID và kết nối JS -->
+    <div class="flex flex-col items-center group/he select-none">
+        <div class="relative z-0 h-16 -mb-2 transition-all duration-200 group-hover/he:h-0">
+            <svg width="128" height="128" viewBox="0 0 128 128"
+                class="duration-500 border-4 rounded-full shadow-md border-zinc-400 border-spacing-5 animate-[spin_3s_linear_infinite] transition-all">
+                <svg>
+                    <rect width="128" height="128" fill="black"></rect>
+                    <circle cx="20" cy="20" r="2" fill="white"></circle>
+                    <circle cx="40" cy="30" r="2" fill="white"></circle>
+                    <circle cx="60" cy="10" r="2" fill="white"></circle>
+                    <circle cx="80" cy="40" r="2" fill="white"></circle>
+                    <circle cx="100" cy="20" r="2" fill="white"></circle>
+                    <circle cx="120" cy="50" r="2" fill="white"></circle>
+                    <circle cx="90" cy="30" r="10" fill="white" fill-opacity="0.5"></circle>
+                    <circle cx="90" cy="30" r="8" fill="white"></circle>
+                    <path d="M0 128 Q32 64 64 128 T128 128" fill="purple" stroke="black" stroke-width="1"></path>
+                    <path d="M0 128 Q32 48 64 128 T128 128" fill="mediumpurple" stroke="black" stroke-width="1"></path>
+                    <path d="M0 128 Q32 32 64 128 T128 128" fill="rebeccapurple" stroke="black" stroke-width="1"></path>
+                    <path d="M0 128 Q16 64 32 128 T64 128" fill="purple" stroke="black" stroke-width="1"></path>
+                    <path d="M64 128 Q80 64 96 128 T128 128" fill="mediumpurple" stroke="black" stroke-width="1"></path>
+                </svg>
+            </svg>
+            <div class="absolute z-10 w-8 h-8 bg-white border-4 rounded-full shadow-sm border-zinc-400 top-12 left-12">
+            </div>
+        </div>
+        <div
+            class="z-30 flex flex-col w-40 h-20 transition-all duration-300 bg-white shadow-md group-hover/he:h-40 group-hover/he:w-72 rounded-2xl shadow-zinc-400">
+            <div class="flex flex-row w-full h-0 group-hover/he:h-20">
+                <div
+                    class="relative flex items-center justify-center w-24 h-24 group-hover/he:-top-6 group-hover/he:-left-4 opacity-0 group-hover/he:animate-[spin_3s_linear_infinite] group-hover/he:opacity-100 transition-all duration-100">
+                    <svg width="96" height="96" viewBox="0 0 128 128"
+                        class="duration-500 border-4 rounded-full shadow-md border-zinc-400 border-spacing-5">
+                        <svg>
+                            <rect width="128" height="128" fill="black"></rect>
+                            <circle cx="20" cy="20" r="2" fill="white"></circle>
+                            <circle cx="40" cy="30" r="2" fill="white"></circle>
+                            <circle cx="60" cy="10" r="2" fill="white"></circle>
+                            <circle cx="80" cy="40" r="2" fill="white"></circle>
+                            <circle cx="100" cy="20" r="2" fill="white"></circle>
+                            <circle cx="120" cy="50" r="2" fill="white"></circle>
+                            <circle cx="90" cy="30" r="10" fill="white" fill-opacity="0.5"></circle>
+                            <circle cx="90" cy="30" r="8" fill="white"></circle>
+                            <path d="M0 128 Q32 64 64 128 T128 128" fill="purple" stroke="black" stroke-width="1">
+                            </path>
+                            <path d="M0 128 Q32 48 64 128 T128 128" fill="mediumpurple" stroke="black" stroke-width="1">
+                            </path>
+                            <path d="M0 128 Q32 32 64 128 T128 128" fill="rebeccapurple" stroke="black"
+                                stroke-width="1"></path>
+                            <path d="M0 128 Q16 64 32 128 T64 128" fill="purple" stroke="black" stroke-width="1">
+                            </path>
+                            <path d="M64 128 Q80 64 96 128 T128 128" fill="mediumpurple" stroke="black"
+                                stroke-width="1"></path>
+                        </svg>
+                    </svg>
+                    <div
+                        class="absolute z-10 w-6 h-6 bg-white border-4 rounded-full shadow-sm border-zinc-400 top-9 left-9">
+                    </div>
+                </div>
+                <div class="flex flex-col justify-center w-full pl-3 -ml-24 overflow-hidden group-hover/he:-ml-3 text-nowrap">
+                    <p class="text-xl font-bold" id="musicName">Music Name</p>
+                    <p class="text-zinc-600" id="artistName">Singer & artist</p>
+                </div>
+            </div>
+            <div class="flex flex-row items-center mx-3 mt-3 bg-indigo-100 rounded-md min-h-4 group-hover/he:mt-0">
+                <span class="hidden pl-3 text-sm text-zinc-600 group-hover/he:inline-block" id="currentTime">0:00</span>
+                <input type="range" min="0" max="100" value="0" id="seekBar"
+                    class="w-24 group-hover/he:w-full flex-grow h-1 mx-2 my-auto bg-gray-300 rounded-full appearance-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-zinc-400 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-md" />
+                <span class="hidden pr-3 text-sm text-zinc-600 group-hover/he:inline-block" id="totalDuration">0:00</span>
+            </div>
+            <div class="flex flex-row items-center justify-center flex-grow mx-3 space-x-5">
+                <label for="playMode" class="flex items-center justify-center w-0 h-full cursor-pointer group-hover/he:w-12">
+                    <input type="checkbox" id="playMode" class="hidden peer/playMode" />
+                    <!-- Repeat Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-repeat peer-checked/playMode:hidden">
+                        <polyline points="17 1 21 5 17 9"></polyline>
+                        <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+                        <polyline points="7 23 3 19 7 15"></polyline>
+                        <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+                    </svg>
+                    <!-- Shuffle Icon (hiển thị khi checkbox được check) -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="hidden feather feather-shuffle peer-checked/playMode:inline-block">
+                        <polyline points="16 3 21 3 21 8"></polyline>
+                        <line x1="4" y1="20" x2="21" y2="3"></line>
+                        <polyline points="21 16 21 21 16 21"></polyline>
+                        <line x1="15" y1="15" x2="21" y2="21"></line>
+                        <line x1="4" y1="4" x2="9" y2="9"></line>
+                    </svg>
+                </label>
+                <div id="skipBackButton" class="flex items-center justify-center w-12 h-full cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-skip-back">
+                        <polygon points="19 20 9 12 19 4 19 20"></polygon>
+                        <line x1="5" y1="19" x2="5" y2="5"></line>
+                    </svg>
+                </div>
+                <label for="playStatus" class="flex items-center justify-center w-12 h-full cursor-pointer">
+                    <input type="checkbox" name="playStatus" id="playStatus" class="hidden peer/playStatus" />
+                    <!-- Play Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-play peer-checked/playStatus:hidden">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    <!-- Pause Icon (hiển thị khi checkbox được check) -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="hidden feather feather-pause peer-checked/playStatus:inline-block">
+                        <rect x="6" y="4" width="4" height="16"></rect>
+                        <rect x="14" y="4" width="4" height="16"></rect>
+                    </svg>
+                </label>
+                <div id="skipForwardButton" class="flex items-center justify-center w-12 h-full cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-skip-forward">
+                        <polygon points="5 4 15 12 5 20 5 4"></polygon>
+                        <line x1="19" y1="5" x2="19" y2="19"></line>
+                    </svg>
+                </div>
+                <div class="flex items-center justify-center w-12 h-full cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="#777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="w-0 feather feather-list group-hover/he:w-12">
+                        <line x1="8" y1="6" x2="21" y2="6"></line>
+                        <line x1="8" y1="12" x2="21" y2="12"></line>
+                        <line x1="8" y1="18" x2="21" y2="18"></line>
+                        <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                        <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                        <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const audio = document.getElementById('myAudio');
+            const playStatusCheckbox = document.getElementById('playStatus'); // Nút Play/Pause
+            const playModeCheckbox = document.getElementById('playMode'); // Nút Repeat/Shuffle
+            const seekBar = document.getElementById('seekBar');
+            const currentTimeDisplay = document.getElementById('currentTime');
+            const totalDurationDisplay = document.getElementById('totalDuration');
+            const skipBackButton = document.getElementById('skipBackButton');
+            const skipForwardButton = document.getElementById('skipForwardButton'); // Sẽ không làm gì nhiều với 1 bài hát
+
+            // Cập nhật tên bài hát và nghệ sĩ (có thể lấy từ metadata nếu muốn phức tạp hơn)
+            // document.getElementById('musicName').textContent = "Tên bài hát của bạn";
+            // document.getElementById('artistName').textContent = "Tên nghệ sĩ";
+
+            // Hàm định dạng thời gian (giây sang MM:SS)
+            function formatTime(seconds) {
+                const minutes = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+            }
+
+            // Khi metadata của audio được tải
+            audio.addEventListener('loadedmetadata', () => {
+                totalDurationDisplay.textContent = formatTime(audio.duration);
+                seekBar.max = audio.duration;
+            });
+
+            // Khi thời gian phát của audio thay đổi
+            audio.addEventListener('timeupdate', () => {
+                currentTimeDisplay.textContent = formatTime(audio.currentTime);
+                seekBar.value = audio.currentTime;
+            });
+
+            // Khi người dùng kéo thanh seek bar
+            seekBar.addEventListener('input', () => {
+                audio.currentTime = seekBar.value;
+            });
+
+            // Xử lý nút Play/Pause
+            playStatusCheckbox.addEventListener('change', () => {
+                if (playStatusCheckbox.checked) {
+                    audio.play().catch(error => {
+                        console.error("Lỗi khi phát nhạc:", error);
+                        // Có thể reset checkbox nếu không phát được
+                        playStatusCheckbox.checked = false;
+                    });
+                } else {
+                    audio.pause();
+                }
+            });
+            
+            // Đồng bộ trạng thái checkbox với audio (nếu audio tự play/pause bằng cách khác)
+            audio.onplay = () => playStatusCheckbox.checked = true;
+            audio.onpause = () => playStatusCheckbox.checked = false;
+
+
+            // Xử lý nút Repeat/Shuffle (hiện tại chỉ làm Repeat)
+            playModeCheckbox.addEventListener('change', () => {
+                if (playModeCheckbox.checked) {
+                    // Giả sử checked là Shuffle, unchecked là Repeat
+                    // Hiện tại, chúng ta sẽ làm ngược lại: unchecked là không loop, checked là loop
+                    // Bạn có thể thay đổi logic này nếu muốn icon Shuffle có nghĩa là shuffle thật sự (cần playlist)
+                    // Tạm thời: checked = LOOP (biểu tượng shuffle hiển thị nhưng chức năng là loop)
+                    audio.loop = true; 
+                    console.log("Chế độ lặp: Bật (Shuffle icon)");
+                } else {
+                    // Unchecked = NO LOOP (biểu tượng repeat hiển thị)
+                    audio.loop = false;
+                    console.log("Chế độ lặp: Tắt (Repeat icon)");
+                }
+            });
+            // Thiết lập ban đầu cho audio.loop dựa trên checkbox (mặc định là không loop)
+            audio.loop = playModeCheckbox.checked;
+
+
+            // Xử lý nút Skip Back (quay lại đầu bài)
+            skipBackButton.addEventListener('click', () => {
+                audio.currentTime = 0;
+                if (audio.paused && playStatusCheckbox.checked) { // Nếu đang pause nhưng nút play đang active
+                    audio.play();
+                } else if (!audio.paused){ // Nếu đang chạy thì cứ để nó chạy từ đầu
+                     // không cần làm gì thêm, nó sẽ tự phát từ đầu
+                }
+            });
+            
+            // Xử lý nút Skip Forward (không có nhiều ý nghĩa với 1 bài, có thể cho qua bài hoặc kết thúc)
+            skipForwardButton.addEventListener('click', () => {
+                // Với 1 bài, có thể tua đến gần cuối để nó tự kết thúc (nếu không loop)
+                if (!audio.loop) {
+                    audio.currentTime = audio.duration - 2; // Tua đến gần cuối
+                     if (audio.paused && playStatusCheckbox.checked) audio.play();
+                } else {
+                     audio.currentTime = 0; // Nếu lặp thì quay lại đầu
+                     if (audio.paused && playStatusCheckbox.checked) audio.play();
+                }
+                console.log("Skip forward clicked");
+            });
+
+            // Khi bài hát kết thúc
+            audio.addEventListener('ended', () => {
+                if (!audio.loop) {
+                    playStatusCheckbox.checked = false; // Cập nhật nút play/pause
+                    seekBar.value = 0; // Reset seekbar
+                    currentTimeDisplay.textContent = formatTime(0);
+                }
+                 // Nếu audio.loop = true, nó sẽ tự động phát lại
+            });
+
+            // Tùy chọn: Nếu bạn muốn nhạc tự động phát khi trang tải
+            // (LƯU Ý: trình duyệt có thể chặn điều này nếu không có tương tác người dùng)
+            // audio.play().catch(e => console.log("Autoplay bị chặn hoặc có lỗi: ", e));
+            // if (!audio.paused) {
+            //    playStatusCheckbox.checked = true;
+            // }
+        });
+    </script>
             <footer class="footer">
                 <div class="footer-content"><span>&copy; 2025</span> <span class="divider">•</span>
                     <span>Watermeloz</span></div>
