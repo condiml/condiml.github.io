@@ -88,7 +88,8 @@ if ('requestIdleCallback' in window) {
 		// Prefetch important resources
 		const resources = [
 			'https://github.com/peterbenoit',
-			'https://peterbenoit.com'
+			'https://peterbenoit.com',
+			'https://xn--a-0ym.vn'
 		];
 
 		resources.forEach(url => {
