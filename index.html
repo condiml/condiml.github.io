@@ -2,6 +2,36 @@
 <html lang="en">
 
 <head>
+        <style>
+        /* CSS tùy chọn để làm đẹp hơn */
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+        }
+        .discord-status-container {
+            display: flex;
+            align-items: center;
+            gap: 8px; /* Khoảng cách giữa icon và text */
+            font-size: 1.1em;
+        }
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 1px solid #555; /* Viền cho dễ nhìn khi offline hoặc lỗi */
+        }
+        .status-indicator.online { background-color: #43b581; /* Green */ }
+        .status-indicator.dnd { background-color: #f04747;    /* Red */ }
+        .status-indicator.idle { background-color: #faa61a;   /* Orange/Yellow */ }
+        .status-indicator.offline { background-color: #747f8d; /* Grey */ }
+        .status-indicator.loading { background-color: #b9bbbe; /* Light Grey for loading */ }
+        .status-indicator.error { background-color: #cc0000; /* Dark Red for error */ }
+
+        #discord-status-text.error {
+            color: #cc0000;
+        }
+    </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Watermeloz</title>
@@ -71,7 +101,77 @@
             <div class="profile-avatar"><img src="watermeloz.jpeg" alt="Watermeloz" class="avatar" width="128"
                     height="128" loading="eager" fetchpriority="high" decoding="async"></div>
             <h1 class="profile-name">Nguyen Ha Son</h1>
-            <p class="profile-bio">Watermeloz</p>
+            <p class="profile-bio"> <div class="discord-status-container">
+        Discord:
+        <span id="discord-status-indicator" class="status-indicator loading"></span>
+        <span id="discord-status-text">Loading</span>
+    </div>
+
+    <script>
+        // ID người dùng Discord của bạn
+        const discordUserId = '394469439606882305';
+        const apiUrl = `https://api.lanyard.rest/v1/users/${discordUserId}`;
+
+        // Lấy các element HTML
+        const statusIndicatorElement = document.getElementById('discord-status-indicator');
+        const statusTextElement = document.getElementById('discord-status-text');
+
+        async function fetchDiscordStatus() {
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error(`Lỗi HTTP! Trạng thái: ${response.status}`);
+                }
+                const data = await response.json();
+
+                if (data.success && data.data) {
+                    const discordStatus = data.data.discord_status;
+                    let statusText = '';
+                    let statusClass = '';
+
+                    switch (discordStatus) {
+                        case 'online':
+                            statusText = 'Online';
+                            statusClass = 'online';
+                            break;
+                        case 'dnd': // Do Not Disturb
+                            statusText = 'Không làm phiền';
+                            statusClass = 'dnd';
+                            break;
+                        case 'idle':
+                            statusText = 'AFK'; // Hoặc "Vắng mặt", "Nhàn rỗi"
+                            statusClass = 'idle';
+                            break;
+                        case 'offline':
+                            statusText = 'Offline';
+                            statusClass = 'offline';
+                            break;
+                        default:
+                            statusText = 'Không xác định';
+                            statusClass = 'offline'; // Mặc định coi như offline nếu không rõ
+                    }
+
+                    statusTextElement.textContent = statusText;
+                    statusIndicatorElement.className = `status-indicator ${statusClass}`; // Cập nhật class cho màu
+                    statusTextElement.classList.remove('error');
+
+                } else {
+                    throw new Error('Dữ liệu API trả về không hợp lệ hoặc không thành công.');
+                }
+
+            } catch (error) {
+                console.error('Không thể lấy trạng thái Discord:', error);
+                statusTextElement.textContent = 'Lỗi';
+                statusTextElement.classList.add('error');
+                statusIndicatorElement.className = 'status-indicator error';
+            }
+        }
+
+        // Gọi hàm khi trang tải xong
+        window.addEventListener('load', fetchDiscordStatus);
+
+        setInterval(fetchDiscordStatus, 30000); // 30000ms = 30 giây
+    </script></p>
             <div class="social-icons"><a target="_blank" href="https://instagram.com/watermel0z"
                     class="social-icon instagram" aria-label="Instagram"><i class="ri-instagram-fill"></i> <span
                         class="tooltip">Instagram</span> </a><a target="_blank" href="https://t.me/watermel0z"
