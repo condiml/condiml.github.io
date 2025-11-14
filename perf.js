@@ -58,18 +58,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		lazyImages.forEach(img => imageObserver.observe(img));
 	}
 
-	// Preload important resources when the browser is idle
-	// Note: This can be used to preload critical resources like hover state images
-	// Example:
-	// if ('requestIdleCallback' in window) {
-	// 	requestIdleCallback(() => {
-	// 		const preloadLink = document.createElement('link');
-	// 		preloadLink.rel = 'preload';
-	// 		preloadLink.as = 'image';
-	// 		preloadLink.href = '/path-to-resource';
-	// 		document.head.appendChild(preloadLink);
-	// 	});
-	// }
 });
 
 // Use passive event listeners for touch events to improve scrolling performance
@@ -82,21 +70,6 @@ const addResourceHint = (type, url) => {
 	link.href = url;
 	document.head.appendChild(link);
 };
-
-// Prefetch external resources when browser is idle
-// if ('requestIdleCallback' in window) {
-// 	requestIdleCallback(() => {
-// 		// Prefetch important resources
-// 		const resources = [
-// 			'https://github.com/peterbenoit',
-// 			'https://peterbenoit.com',
-// 			'https://xn--a-0ym.vn'
-// 		];
-// 		resources.forEach(url => {
-// 			addResourceHint('prefetch', url);
-// 		});
-// 	}, { timeout: 5000 });
-// }
 
 // Defer non-critical CSS
 const loadDeferredStyles = () => {
