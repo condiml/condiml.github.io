@@ -110,17 +110,51 @@
             color: white;
             font-family: 'Outfit', sans-serif;
             position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
         ">
-            <i class="ri-hand-touch-line" style="
-                font-size: 5rem;
-                display: inline-block;
-                background: linear-gradient(135deg, #b916f9, #9f3cfb);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-                animation: touchAnimation 1.5s ease-in-out infinite;
-                transform-origin: bottom center;
-            "></i>
+            <div style="position: relative; display: inline-block;">
+                <!-- Icon ngón tay -->
+                <i class="ri-hand-touch-line" style="
+                    font-size: 6rem;
+                    display: inline-block;
+                    background: linear-gradient(135deg, #b916f9, #9f3cfb);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    animation: touchAnimation 1.2s ease-in-out infinite;
+                    transform-origin: bottom center;
+                    position: relative;
+                    z-index: 2;
+                "></i>
+                <!-- Hiệu ứng ripple (sóng nước) -->
+                <div style="
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 80px;
+                    height: 80px;
+                    border: 2px solid #b916f9;
+                    border-radius: 50%;
+                    opacity: 0;
+                    animation: rippleAnimation 1.2s ease-out infinite;
+                "></div>
+                <div style="
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 80px;
+                    height: 80px;
+                    border: 2px solid #9f3cfb;
+                    border-radius: 50%;
+                    opacity: 0;
+                    animation: rippleAnimation 1.2s ease-out infinite 0.3s;
+                "></div>
+            </div>
         </div>
         <style>
             @keyframes touchAnimation {
@@ -129,8 +163,18 @@
                     opacity: 1;
                 }
                 50% {
-                    transform: translateY(-15px) scale(1.1);
-                    opacity: 0.8;
+                    transform: translateY(-20px) scale(1.15);
+                    opacity: 0.9;
+                }
+            }
+            @keyframes rippleAnimation {
+                0% {
+                    transform: translate(-50%, -50%) scale(0.8);
+                    opacity: 0.6;
+                }
+                100% {
+                    transform: translate(-50%, -50%) scale(1.5);
+                    opacity: 0;
                 }
             }
         </style>
