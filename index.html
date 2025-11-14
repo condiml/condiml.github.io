@@ -311,26 +311,41 @@
     <script>
         // View Counter - sử dụng CountAPI
         (function() {
-            // Tạo namespace unique cho website này (có thể đổi thành tên khác)
-            const namespace = 'condiml-github-io';
-            const key = 'pageviews';
-            const countAPIUrl = `https://api.countapi.xyz/hit/${namespace}/${key}`;
+            // Tạo namespace unique cho website này
+            const namespace = 'condiml';
+            const key = 'github-io-views';
+            const createAPIUrl = `https://api.countapi.xyz/create?namespace=${namespace}&key=${key}&value=0`;
+            const hitAPIUrl = `https://api.countapi.xyz/hit/${namespace}/${key}`;
             const getAPIUrl = `https://api.countapi.xyz/get/${namespace}/${key}`;
             
             const viewNumberElement = document.getElementById('view-number');
+            if (!viewNumberElement) return;
             
-            // Lấy và hiển thị số view hiện tại
-            async function updateViewCount() {
+            // Tạo key nếu chưa tồn tại, sau đó tăng view
+            async function initializeAndUpdateView() {
                 try {
-                    // Tăng view count
-                    const hitResponse = await fetch(countAPIUrl);
-                    const hitData = await hitResponse.json();
+                    // Thử tăng view count (nếu key đã tồn tại)
+                    let hitResponse = await fetch(hitAPIUrl);
+                    let hitData = await hitResponse.json();
                     
+                    // Nếu key chưa tồn tại (error hoặc null), tạo mới
+                    if (!hitData || !hitData.value) {
+                        // Tạo key mới
+                        const createResponse = await fetch(createAPIUrl);
+                        const createData = await createResponse.json();
+                        
+                        if (createData && createData.namespace) {
+                            // Sau khi tạo, tăng view lên 1
+                            hitResponse = await fetch(hitAPIUrl);
+                            hitData = await hitResponse.json();
+                        }
+                    }
+                    
+                    // Hiển thị số view
                     if (hitData && hitData.value !== undefined) {
-                        // Format số với dấu phẩy
                         viewNumberElement.textContent = hitData.value.toLocaleString('vi-VN');
                     } else {
-                        // Nếu lỗi, thử lấy số view hiện tại
+                        // Nếu vẫn không được, thử lấy số view hiện tại
                         const getResponse = await fetch(getAPIUrl);
                         const getData = await getResponse.json();
                         if (getData && getData.value !== undefined) {
@@ -340,27 +355,39 @@
                         }
                     }
                 } catch (error) {
-                    console.warn('Không thể lấy số lượt xem:', error);
-                    viewNumberElement.textContent = 'N/A';
+                    console.error('Lỗi view counter:', error);
+                    // Nếu CountAPI không hoạt động, dùng localStorage làm fallback
+                    try {
+                        let localViews = localStorage.getItem('pageViews');
+                        if (localViews) {
+                            localViews = parseInt(localViews) + 1;
+                        } else {
+                            localViews = 1;
+                        }
+                        localStorage.setItem('pageViews', localViews);
+                        viewNumberElement.textContent = localViews.toLocaleString('vi-VN');
+                    } catch (e) {
+                        viewNumberElement.textContent = 'N/A';
+                    }
                 }
             }
             
             // Chỉ update view count sau khi overlay được ẩn (sau khi user tương tác)
             const checkAndUpdateView = setInterval(() => {
                 const overlay = document.getElementById('interaction-overlay');
-                if (overlay && overlay.style.display === 'none') {
-                    updateViewCount();
+                if (overlay && (overlay.style.display === 'none' || overlay.style.visibility === 'hidden')) {
+                    initializeAndUpdateView();
                     clearInterval(checkAndUpdateView);
                 }
             }, 100);
             
-            // Fallback: update sau 2 giây nếu overlay đã được ẩn
+            // Fallback: update sau 3 giây nếu overlay đã được ẩn
             setTimeout(() => {
                 const overlay = document.getElementById('interaction-overlay');
                 if (overlay && (overlay.style.display === 'none' || overlay.style.visibility === 'hidden')) {
-                    updateViewCount();
+                    initializeAndUpdateView();
                 }
-            }, 2000);
+            }, 3000);
         })();
     </script>
     <script>
