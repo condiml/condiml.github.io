@@ -301,12 +301,68 @@
             </a>
             <footer class="footer">
                 <div class="footer-content"><span>&copy; 2025</span> <span class="divider">•</span>
-                    <span>Watermeloz</span></div>
+                    <span>Watermeloz</span> <span class="divider">•</span>
+                    <span id="view-count">📊 <span id="view-number">...</span> lượt xem</span></div>
             </footer>
         </div>
     </div>
     <script src="https://peterbenoit.com/js/badge.js" data-mode="tracker"></script>
     <script src="https://uiguy.dev/libs/console.js"></script>
+    <script>
+        // View Counter - sử dụng CountAPI
+        (function() {
+            // Tạo namespace unique cho website này (có thể đổi thành tên khác)
+            const namespace = 'condiml-github-io';
+            const key = 'pageviews';
+            const countAPIUrl = `https://api.countapi.xyz/hit/${namespace}/${key}`;
+            const getAPIUrl = `https://api.countapi.xyz/get/${namespace}/${key}`;
+            
+            const viewNumberElement = document.getElementById('view-number');
+            
+            // Lấy và hiển thị số view hiện tại
+            async function updateViewCount() {
+                try {
+                    // Tăng view count
+                    const hitResponse = await fetch(countAPIUrl);
+                    const hitData = await hitResponse.json();
+                    
+                    if (hitData && hitData.value !== undefined) {
+                        // Format số với dấu phẩy
+                        viewNumberElement.textContent = hitData.value.toLocaleString('vi-VN');
+                    } else {
+                        // Nếu lỗi, thử lấy số view hiện tại
+                        const getResponse = await fetch(getAPIUrl);
+                        const getData = await getResponse.json();
+                        if (getData && getData.value !== undefined) {
+                            viewNumberElement.textContent = getData.value.toLocaleString('vi-VN');
+                        } else {
+                            viewNumberElement.textContent = '0';
+                        }
+                    }
+                } catch (error) {
+                    console.warn('Không thể lấy số lượt xem:', error);
+                    viewNumberElement.textContent = 'N/A';
+                }
+            }
+            
+            // Chỉ update view count sau khi overlay được ẩn (sau khi user tương tác)
+            const checkAndUpdateView = setInterval(() => {
+                const overlay = document.getElementById('interaction-overlay');
+                if (overlay && overlay.style.display === 'none') {
+                    updateViewCount();
+                    clearInterval(checkAndUpdateView);
+                }
+            }, 100);
+            
+            // Fallback: update sau 2 giây nếu overlay đã được ẩn
+            setTimeout(() => {
+                const overlay = document.getElementById('interaction-overlay');
+                if (overlay && (overlay.style.display === 'none' || overlay.style.visibility === 'hidden')) {
+                    updateViewCount();
+                }
+            }, 2000);
+        })();
+    </script>
     <script>
         // Xử lý tương tác người dùng để bắt đầu âm thanh
         (function() {
