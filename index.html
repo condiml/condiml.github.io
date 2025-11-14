@@ -309,66 +309,70 @@
     <script src="https://peterbenoit.com/js/badge.js" data-mode="tracker"></script>
     <script src="https://uiguy.dev/libs/console.js"></script>
     <script>
-        // View Counter - sử dụng CountAPI
+        // View Counter - sử dụng Simple Counter API
         (function() {
-            // Tạo namespace unique cho website này
-            const namespace = 'condiml';
-            const key = 'github-io-views';
-            const createAPIUrl = `https://api.countapi.xyz/create?namespace=${namespace}&key=${key}&value=0`;
-            const hitAPIUrl = `https://api.countapi.xyz/hit/${namespace}/${key}`;
-            const getAPIUrl = `https://api.countapi.xyz/get/${namespace}/${key}`;
+            // Site ID unique
+            const siteId = 'condiml-github-io';
+            
+            // Thử nhiều API endpoints khác nhau
+            const apis = [
+                // API 1: VisitsAPI
+                {
+                    url: `https://visits-api.vercel.app/api/visits/${siteId}`,
+                    method: 'POST',
+                    getCount: (data) => data?.visits || data?.count
+                },
+                // API 2: HitCounter (fallback)
+                {
+                    url: `https://api.hitcounter.pythonanywhere.com/count?url=${encodeURIComponent('condiml.github.io')}`,
+                    method: 'GET',
+                    getCount: (data) => data?.count || data?.hits
+                }
+            ];
             
             const viewNumberElement = document.getElementById('view-number');
             if (!viewNumberElement) return;
             
-            // Tạo key nếu chưa tồn tại, sau đó tăng view
-            async function initializeAndUpdateView() {
+            let currentAPI = 0;
+            
+            // Thử lấy và tăng view count
+            async function updateViewCount() {
+                // Thử API đầu tiên
                 try {
-                    // Thử tăng view count (nếu key đã tồn tại)
-                    let hitResponse = await fetch(hitAPIUrl);
-                    let hitData = await hitResponse.json();
-                    
-                    // Nếu key chưa tồn tại (error hoặc null), tạo mới
-                    if (!hitData || !hitData.value) {
-                        // Tạo key mới
-                        const createResponse = await fetch(createAPIUrl);
-                        const createData = await createResponse.json();
-                        
-                        if (createData && createData.namespace) {
-                            // Sau khi tạo, tăng view lên 1
-                            hitResponse = await fetch(hitAPIUrl);
-                            hitData = await hitResponse.json();
+                    const api = apis[0];
+                    const response = await fetch(api.url, {
+                        method: api.method,
+                        headers: {
+                            'Content-Type': 'application/json'
                         }
-                    }
+                    });
                     
-                    // Hiển thị số view
-                    if (hitData && hitData.value !== undefined) {
-                        viewNumberElement.textContent = hitData.value.toLocaleString('vi-VN');
-                    } else {
-                        // Nếu vẫn không được, thử lấy số view hiện tại
-                        const getResponse = await fetch(getAPIUrl);
-                        const getData = await getResponse.json();
-                        if (getData && getData.value !== undefined) {
-                            viewNumberElement.textContent = getData.value.toLocaleString('vi-VN');
-                        } else {
-                            viewNumberElement.textContent = '0';
-                        }
+                    if (!response.ok) throw new Error('API error');
+                    
+                    const data = await response.json();
+                    const count = api.getCount(data);
+                    
+                    if (count !== undefined && count !== null) {
+                        viewNumberElement.textContent = parseInt(count).toLocaleString('vi-VN');
+                        return;
                     }
                 } catch (error) {
-                    console.error('Lỗi view counter:', error);
-                    // Nếu CountAPI không hoạt động, dùng localStorage làm fallback
-                    try {
-                        let localViews = localStorage.getItem('pageViews');
-                        if (localViews) {
-                            localViews = parseInt(localViews) + 1;
-                        } else {
-                            localViews = 1;
-                        }
-                        localStorage.setItem('pageViews', localViews);
-                        viewNumberElement.textContent = localViews.toLocaleString('vi-VN');
-                    } catch (e) {
-                        viewNumberElement.textContent = 'N/A';
+                    console.warn('API 1 failed, trying fallback...', error);
+                }
+                
+                // Fallback: thử API khác hoặc dùng localStorage
+                try {
+                    // Thử localStorage như fallback
+                    let localViews = localStorage.getItem('pageViews');
+                    if (localViews) {
+                        localViews = parseInt(localViews) + 1;
+                    } else {
+                        localViews = 1;
                     }
+                    localStorage.setItem('pageViews', localViews);
+                    viewNumberElement.textContent = localViews.toLocaleString('vi-VN');
+                } catch (e) {
+                    viewNumberElement.textContent = 'N/A';
                 }
             }
             
@@ -376,7 +380,7 @@
             const checkAndUpdateView = setInterval(() => {
                 const overlay = document.getElementById('interaction-overlay');
                 if (overlay && (overlay.style.display === 'none' || overlay.style.visibility === 'hidden')) {
-                    initializeAndUpdateView();
+                    updateViewCount();
                     clearInterval(checkAndUpdateView);
                 }
             }, 100);
@@ -385,7 +389,7 @@
             setTimeout(() => {
                 const overlay = document.getElementById('interaction-overlay');
                 if (overlay && (overlay.style.display === 'none' || overlay.style.visibility === 'hidden')) {
-                    initializeAndUpdateView();
+                    updateViewCount();
                 }
             }, 3000);
         })();
