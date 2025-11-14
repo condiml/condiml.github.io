@@ -84,20 +84,19 @@ const addResourceHint = (type, url) => {
 };
 
 // Prefetch external resources when browser is idle
-if ('requestIdleCallback' in window) {
-	requestIdleCallback(() => {
-		// Prefetch important resources
-		const resources = [
-			'https://github.com/peterbenoit',
-			'https://peterbenoit.com',
-			'https://xn--a-0ym.vn'
-		];
-
-		resources.forEach(url => {
-			addResourceHint('prefetch', url);
-		});
-	}, { timeout: 5000 });
-}
+// if ('requestIdleCallback' in window) {
+// 	requestIdleCallback(() => {
+// 		// Prefetch important resources
+// 		const resources = [
+// 			'https://github.com/peterbenoit',
+// 			'https://peterbenoit.com',
+// 			'https://xn--a-0ym.vn'
+// 		];
+// 		resources.forEach(url => {
+// 			addResourceHint('prefetch', url);
+// 		});
+// 	}, { timeout: 5000 });
+// }
 
 // Defer non-critical CSS
 const loadDeferredStyles = () => {
