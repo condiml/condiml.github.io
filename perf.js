@@ -59,16 +59,17 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	// Preload important resources when the browser is idle
-	if ('requestIdleCallback' in window) {
-		requestIdleCallback(() => {
-			// Preload hover state images or other resources
-			const preloadLink = document.createElement('link');
-			preloadLink.rel = 'preload';
-			preloadLink.as = 'image';
-			preloadLink.href = '/path-to-resource';
-			document.head.appendChild(preloadLink);
-		});
-	}
+	// Note: This can be used to preload critical resources like hover state images
+	// Example:
+	// if ('requestIdleCallback' in window) {
+	// 	requestIdleCallback(() => {
+	// 		const preloadLink = document.createElement('link');
+	// 		preloadLink.rel = 'preload';
+	// 		preloadLink.as = 'image';
+	// 		preloadLink.href = '/path-to-resource';
+	// 		document.head.appendChild(preloadLink);
+	// 	});
+	// }
 });
 
 // Use passive event listeners for touch events to improve scrolling performance
