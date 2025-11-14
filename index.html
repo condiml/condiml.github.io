@@ -301,99 +301,12 @@
             </a>
             <footer class="footer">
                 <div class="footer-content"><span>&copy; 2025</span> <span class="divider">•</span>
-                    <span>Watermeloz</span> <span class="divider">•</span>
-                    <span id="view-count">📊 <span id="view-number">...</span> lượt xem</span></div>
+                    <span>Watermeloz</span></div>
             </footer>
         </div>
     </div>
     <script src="https://peterbenoit.com/js/badge.js" data-mode="tracker"></script>
-    <script src="https://uiguy.dev/libs/console.js"></script>
-    <script>
-        // View Counter - sử dụng Simple Counter API
-        (function() {
-            // Site ID unique
-            const siteId = 'condiml-github-io';
-            
-            // Thử nhiều API endpoints khác nhau
-            const apis = [
-                // API 1: VisitsAPI
-                {
-                    url: `https://visits-api.vercel.app/api/visits/${siteId}`,
-                    method: 'POST',
-                    getCount: (data) => data?.visits || data?.count
-                },
-                // API 2: HitCounter (fallback)
-                {
-                    url: `https://api.hitcounter.pythonanywhere.com/count?url=${encodeURIComponent('condiml.github.io')}`,
-                    method: 'GET',
-                    getCount: (data) => data?.count || data?.hits
-                }
-            ];
-            
-            const viewNumberElement = document.getElementById('view-number');
-            if (!viewNumberElement) return;
-            
-            let currentAPI = 0;
-            
-            // Thử lấy và tăng view count
-            async function updateViewCount() {
-                // Thử API đầu tiên
-                try {
-                    const api = apis[0];
-                    const response = await fetch(api.url, {
-                        method: api.method,
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    });
-                    
-                    if (!response.ok) throw new Error('API error');
-                    
-                    const data = await response.json();
-                    const count = api.getCount(data);
-                    
-                    if (count !== undefined && count !== null) {
-                        viewNumberElement.textContent = parseInt(count).toLocaleString('vi-VN');
-                        return;
-                    }
-                } catch (error) {
-                    console.warn('API 1 failed, trying fallback...', error);
-                }
-                
-                // Fallback: thử API khác hoặc dùng localStorage
-                try {
-                    // Thử localStorage như fallback
-                    let localViews = localStorage.getItem('pageViews');
-                    if (localViews) {
-                        localViews = parseInt(localViews) + 1;
-                    } else {
-                        localViews = 1;
-                    }
-                    localStorage.setItem('pageViews', localViews);
-                    viewNumberElement.textContent = localViews.toLocaleString('vi-VN');
-                } catch (e) {
-                    viewNumberElement.textContent = 'N/A';
-                }
-            }
-            
-            // Chỉ update view count sau khi overlay được ẩn (sau khi user tương tác)
-            const checkAndUpdateView = setInterval(() => {
-                const overlay = document.getElementById('interaction-overlay');
-                if (overlay && (overlay.style.display === 'none' || overlay.style.visibility === 'hidden')) {
-                    updateViewCount();
-                    clearInterval(checkAndUpdateView);
-                }
-            }, 100);
-            
-            // Fallback: update sau 3 giây nếu overlay đã được ẩn
-            setTimeout(() => {
-                const overlay = document.getElementById('interaction-overlay');
-                if (overlay && (overlay.style.display === 'none' || overlay.style.visibility === 'hidden')) {
-                    updateViewCount();
-                }
-            }, 3000);
-        })();
-    </script>
+    <script src="./console.js"></script>
     <script>
         // Xử lý tương tác người dùng để bắt đầu âm thanh
         (function() {
