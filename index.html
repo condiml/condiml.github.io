@@ -57,9 +57,26 @@
     <link rel="stylesheet" href="/assets/music-player.css">
     <link rel="stylesheet" href="/assets/overlay.css">
     <link rel="stylesheet" href="/assets/discord-status.css">
+    <link rel="stylesheet" href="/assets/theme.css">
+    <script>
+        (function() {
+            var k = 'theme', d = 'dark', l = 'light';
+            try {
+                var s = localStorage.getItem(k);
+                if (s === d || s === l) { document.documentElement.setAttribute('data-theme', s); return; }
+            } catch (e) {}
+            document.documentElement.setAttribute('data-theme',
+                window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? l : d);
+        })();
+    </script>
 </head>
 
 <body>
+    <!-- Theme toggle: Dark / Light -->
+    <button type="button" id="theme-toggle" class="theme-toggle" aria-label="Chuyển sang giao diện sáng">
+        <i class="ri-sun-line icon-sun" aria-hidden="true"></i>
+        <i class="ri-moon-line icon-moon" aria-hidden="true"></i>
+    </button>
     <audio id="background-music" src="nhacnen.mp3" loop>
         Trình duyệt của bạn không hỗ trợ thẻ audio.
     </audio>
@@ -192,6 +209,7 @@
     <script src="/assets/music-player.js" defer></script>
     <script src="/assets/overlay-handler.js" defer></script>
     <script src="/assets/discord-status.js" defer></script>
+    <script src="/assets/theme.js" defer></script>
 </body>
 
 </html>
