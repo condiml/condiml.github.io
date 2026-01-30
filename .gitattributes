@@ -1,0 +1,14 @@
+# Chuẩn hóa line endings về LF (Unix style) cho toàn bộ repo
+# Tránh cảnh báo "LF to CRLF" và giữ diff sạch khi làm việc cross-platform
+* text=auto eol=lf
+
+# Binary files - không convert
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.ico binary
+*.webp binary
+*.svg binary
+*.mp3 binary
+*.woff binary
+*.woff2 binary
