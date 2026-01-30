@@ -1,0 +1,241 @@
+/* Music Player Styles */
+.music-card {
+    position: fixed;
+    left: 50%;
+    bottom: 20px;
+    transform: translateX(-50%);
+    width: 260px;
+    height: 130px;
+    background: #151515;
+    border-radius: 10px;
+    padding: 10px;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.music-card-top {
+    position: relative;
+    width: 100%;
+    display: flex;
+    gap: 10px;
+}
+
+.music-pfp {
+    position: relative;
+    top: 5px;
+    left: 5px;
+    height: 40px;
+    width: 40px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.music-title-1 {
+    color: white;
+    font-size: 24px;
+    font-weight: normal;
+    margin: 0 0 0 5px;
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.music-title-2 {
+    color: lightgrey;
+    font-size: 12px;
+    font-weight: lighter;
+    margin: -5px 0 0 5px;
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.music-time {
+    width: 90%;
+    background-color: #5e5e5e;
+    height: 6px;
+    border-radius: 3px;
+    position: absolute;
+    left: 5%;
+    bottom: 24px;
+    cursor: pointer;
+}
+
+.music-elapsed {
+    width: 0%;
+    background-color: #1db954;
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.1s linear;
+}
+
+.music-controls {
+    gap: 4px;
+    align-items: center;
+    color: #ffffff;
+    display: flex;
+    position: absolute;
+    bottom: 35px;
+    left: 0;
+    width: 100%;
+    justify-content: center;
+}
+
+.music-volume {
+    height: 100%;
+    width: 42px;
+    margin-right: 2px;
+    opacity: 0;
+    position: relative;
+    transition: opacity 0.2s;
+}
+
+.music-air {
+    height: 100%;
+    width: 42px;
+}
+
+.music-controls svg {
+    cursor: pointer;
+    transition: color 0.1s;
+}
+
+.music-controls svg:hover {
+    color: #23da63;
+}
+
+.music-volume-button:hover ~ .music-volume {
+    opacity: 1;
+}
+
+.music-volume:hover {
+    opacity: 1;
+}
+
+.music-slider {
+    height: 4px;
+    background-color: #5e5e5e;
+    width: 80%;
+    border-radius: 2px;
+    margin-left: 10%;
+    cursor: pointer;
+    position: relative;
+}
+
+.music-slider .music-green {
+    background-color: #1db954;
+    height: 100%;
+    width: 80%;
+    border-radius: 3px;
+    transition: width 0.1s;
+}
+
+.music-circle {
+    background-color: white;
+    height: 6px;
+    width: 6px;
+    border-radius: 3px;
+    position: absolute;
+    right: 20%;
+    top: -25%;
+    cursor: pointer;
+}
+
+.music-timetext {
+    color: white;
+    font-size: 8px;
+    position: absolute;
+}
+
+.music-time-now {
+    bottom: 10px;
+    left: 15px;
+}
+
+.music-time-full {
+    bottom: 10px;
+    right: 15px;
+}
+
+.music-playing {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    gap: 1px;
+    width: 30px;
+    height: 20px;
+}
+
+.music-greenline {
+    background-color: #1db954;
+    height: 20px;
+    width: 2px;
+    position: relative;
+    transform-origin: bottom;
+}
+
+.music-line-1 {
+    animation: music-playing 1s ease-in-out infinite;
+    animation-delay: 0.2s;
+}
+
+.music-line-2 {
+    animation: music-playing 1s ease-in-out infinite;
+    animation-delay: 0.5s;
+}
+
+.music-line-3 {
+    animation: music-playing 1s ease-in-out infinite;
+    animation-delay: 0.6s;
+}
+
+.music-line-4 {
+    animation: music-playing 1s ease-in-out infinite;
+    animation-delay: 0s;
+}
+
+.music-line-5 {
+    animation: music-playing 1s ease-in-out infinite;
+    animation-delay: 0.4s;
+}
+
+.music-playing.paused .music-greenline {
+    animation-play-state: paused;
+}
+
+@keyframes music-playing {
+    0% {
+        transform: scaleY(0.1);
+    }
+    33% {
+        transform: scaleY(0.6);
+    }
+    66% {
+        transform: scaleY(0.9);
+    }
+    100% {
+        transform: scaleY(0.1);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .music-card {
+        width: 90%;
+        max-width: 300px;
+        bottom: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .music-card {
+        height: 120px;
+    }
+    
+    .music-title-1 {
+        font-size: 20px;
+    }
+    
+    .music-title-2 {
+        font-size: 11px;
+    }
+}

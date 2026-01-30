@@ -1,0 +1,62 @@
+/* Discord Status Styles */
+.discord-status-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.1em;
+}
+
+.status-indicator {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1px solid #555;
+    transition: background-color 0.3s ease;
+}
+
+.status-indicator.online {
+    background-color: #43b581;
+    box-shadow: 0 0 8px rgba(67, 181, 129, 0.5);
+}
+
+.status-indicator.dnd {
+    background-color: #f04747;
+    box-shadow: 0 0 8px rgba(240, 71, 71, 0.5);
+}
+
+.status-indicator.idle {
+    background-color: #faa61a;
+    box-shadow: 0 0 8px rgba(250, 166, 26, 0.5);
+}
+
+.status-indicator.offline {
+    background-color: #747f8d;
+}
+
+.status-indicator.loading {
+    background-color: #b9bbbe;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+.status-indicator.error {
+    background-color: #cc0000;
+}
+
+#discord-status-text.error {
+    color: #cc0000;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Profile name font fix for Vietnamese */
+.profile-name {
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
